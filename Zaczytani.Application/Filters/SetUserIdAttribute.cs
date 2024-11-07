@@ -14,7 +14,7 @@ public class SetUserIdAttribute : ActionFilterAttribute
         {
             foreach (var argument in context.ActionArguments.Values)
             {
-                if (argument is IUserRequest userRequest)
+                if (argument is IUserIdAssignable userRequest)
                 {
                     userRequest.SetUserId(userId);
                 }

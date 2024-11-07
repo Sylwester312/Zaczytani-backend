@@ -1,6 +1,6 @@
 ﻿namespace Zaczytani.Application.Filters;
 
-public interface IUserRequest
+public interface IUserIdAssignable
 {
     void SetUserId(Guid userId);
 }
