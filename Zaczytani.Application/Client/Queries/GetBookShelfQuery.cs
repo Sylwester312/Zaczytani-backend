@@ -4,14 +4,19 @@ using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Client.Queries;
 
-public class GetBookShelfQuery : IRequest<BookDto>
+public class GetBookShelfQuery : IRequest<IEnumerable<BookDto>>
 {
-    private class GetBookShelfQueryHandler(IBookRepository bookRepository) : IRequestHandler<GetBookShelfQuery, BookDto>
+    private class GetBookShelfQueryHandler(IBookRepository bookRepository) : IRequestHandler<GetBookShelfQuery, IEnumerable<BookDto>>
     {
         private readonly IBookRepository _bookRepository = bookRepository;
-        public Task<BookDto> Handle(GetBookShelfQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<BookDto>> Handle(GetBookShelfQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var books = new List<BookDto>
+            {
+                new(Guid.NewGuid(), "Tytuł")
+            };
+
+            return Task.FromResult(books.AsEnumerable());
         }
     }
 }
