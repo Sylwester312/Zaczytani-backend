@@ -6,6 +6,7 @@ using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Repositories;
 using Zaczytani.Infrastructure.Persistance;
 using Zaczytani.Infrastructure.Repositories;
+using Zaczytani.Infrastructure.Seeders;
 
 namespace Zaczytani.Infrastructure.Extenstions;
 
@@ -21,5 +22,7 @@ public static class ServiceCollectionExtension
             .AddEntityFrameworkStores<BookDbContext>();
 
         services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<ISeeder, Seeder>();
+
     }
 }
