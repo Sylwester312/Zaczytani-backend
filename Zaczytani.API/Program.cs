@@ -2,6 +2,7 @@ using Zaczytani.API.Extenstions;
 using Zaczytani.Application.Extenstions;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Infrastructure.Extenstions;
+using Zaczytani.Infrastructure.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,14 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<ISeeder>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    await seeder.Seed();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }

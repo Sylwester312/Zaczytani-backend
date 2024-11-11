@@ -41,14 +41,14 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
                 var authors = GetAuthors();
                 await _dbContext.Authors.AddRangeAsync(authors);
                 await _dbContext.SaveChangesAsync();
-            }
+        }
 
             if (!_dbContext.Books.Any())
             {
                 var books = GetBooks();
                 await _dbContext.Books.AddRangeAsync(books);
                 await _dbContext.SaveChangesAsync();
-            }
+    }
 
         }
     }
