@@ -5,5 +5,6 @@ namespace Zaczytani.Domain.Repositories;
 public interface IBookRepository
 {
     Task AddAsync(Book entity);
+    IQueryable<Book> GetBySearchPhrase(string searchPhrase);
     Task SaveChangesAsync();
 }
