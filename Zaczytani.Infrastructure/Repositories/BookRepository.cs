@@ -10,6 +10,8 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
     private readonly BookDbContext _dbContext = dbContext;
 
     public async Task AddAsync(Book entity) => await _dbContext.AddAsync(entity);
+    public IQueryable<Book> GetBySearchPhrase(string searchPhrase)
+        => _dbContext.Books.Where(b => b.Title.Contains(searchPhrase)).OrderBy(b => b.Title);
     public async Task<Book?> GetByIdAsync(Guid bookId)
     {
         return await _dbContext.Books

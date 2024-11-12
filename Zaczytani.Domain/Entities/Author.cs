@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Zaczytani.Domain.Entities
+namespace Zaczytani.Domain.Entities;
+
+public class Author
 {
-    public class Author
-    {
-        public Guid Id { get; set; }
-        public string? Name { get; set; }
+    [Key]
+    public Guid Id { get; set; }
 
-        // Kolekcja książek, aby odzwierciedlić relację wiele-do-wielu z książkami
-        public ICollection<Book> Books { get; set; } = new List<Book>();
-    }
+    [Required]
+    [StringLength(150)]
+    public string Name { get; set; } = string.Empty;
+
+    public List<Book> Books { get; set; } = [];
 }
