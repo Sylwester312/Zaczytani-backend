@@ -13,7 +13,7 @@ public class GetBookShelfQuery : IRequest<IEnumerable<BookDto>>
         {
             var books = new List<BookDto>
             {
-                new(Guid.NewGuid(), "Tytuł")
+                new BookDto(Guid.NewGuid(), "Tytuł", "1234567890", "Opis książki", 300, "Autor 1, Autor 2")
             };
 
             return Task.FromResult(books.AsEnumerable());

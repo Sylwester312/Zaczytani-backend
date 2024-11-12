@@ -5,5 +5,7 @@ namespace Zaczytani.Domain.Repositories;
 public interface IBookRepository
 {
     Task AddAsync(Book entity);
+    Task<Book?> GetByIdAsync(Guid bookId);
+    Task<Author?> GetAuthorByIdAsync(Guid authorId);
     Task SaveChangesAsync();
 }

@@ -17,8 +17,9 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     [HttpPost]
     public async Task<IActionResult> CreateBook([FromBody] CreateBookCommand command)
     {
-        var result = await _mediator.Send(command);
-        return Ok(result);
+        var bookId = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetBookDetails), new { id = bookId }, new { id = bookId });
+
     }
 
     [HttpGet]
@@ -26,5 +27,13 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     {
         var result = await _mediator.Send(new GetBookShelfQuery());
         return Ok(result);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetBookDetails(Guid id)
+    {
+        var query = new GetBookDetailsQuery(id);
+        var result = await _mediator.Send(query);
+        return result != null ? Ok(result) : NotFound();
     }
 }
