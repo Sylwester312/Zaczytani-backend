@@ -33,21 +33,7 @@ public class GetBookDetailsQuery : IRequest<BookDto>
                 throw new NotFoundException($"Book with ID {request.BookId} was not found.");
             }
 
-            var title = book.Title ?? string.Empty;
-            var isbn = book.Isbn ?? string.Empty;
-            var description = book.Description ?? string.Empty;
-            var authorsAsString = book.Authors != null
-                ? string.Join(", ", book.Authors.Select(a => a.Name))
-                : string.Empty;
-
-            return new BookDto(
-                Id: book.Id,
-                Title: title,
-                Isbn: isbn,
-                Description: description,
-                PageNumber: book.PageNumber,
-                Authors: authorsAsString
-            );
+            return _mapper.Map<BookDto>(book);
         }
     }
 }
