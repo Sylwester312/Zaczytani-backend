@@ -11,6 +11,9 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
 
     public async Task AddAsync(Book entity) => await _dbContext.AddAsync(entity);
     public IQueryable<Book> GetBySearchPhrase(string searchPhrase)
-        => _dbContext.Books.Where(b => b.Title.Contains(searchPhrase)).OrderBy(b => b.Title);
+        => _dbContext.Books.Where(b => b.Title.Contains(searchPhrase) 
+                                    || b.Isbn.Contains(searchPhrase) 
+                                    || b.Authors.Any(a => a.Name.Contains(searchPhrase)))
+        .OrderBy(b => b.Title);
     public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }
