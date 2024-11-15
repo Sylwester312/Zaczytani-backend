@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Repositories;
+using Zaczytani.Infrastructure.Configuration;
 using Zaczytani.Infrastructure.Persistance;
 using Zaczytani.Infrastructure.Repositories;
 using Zaczytani.Infrastructure.Seeders;
@@ -20,6 +21,9 @@ public static class ServiceCollectionExtension
         services.AddIdentityApiEndpoints<User>()
             .AddRoles<UserRole>()
             .AddEntityFrameworkStores<BookDbContext>();
+
+        services.Configure<FileStorageOptions>(configuration.GetSection("FileStorage"));
+        services.AddSingleton<IFileStorageRepository, FileStorageRepository>();
 
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<ISeeder, Seeder>();

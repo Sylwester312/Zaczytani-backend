@@ -20,6 +20,8 @@ public class Book
     [Required]
     public int PageNumber { get; set; }
 
+    public string? Image { get; set; }
+
     /// <summary>
     /// Admin who created the book.
     /// Need for future support and debugging.

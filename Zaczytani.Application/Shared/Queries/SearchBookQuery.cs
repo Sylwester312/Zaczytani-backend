@@ -9,9 +9,10 @@ public class SearchBookQuery : IRequest<IEnumerable<SearchDto>>
 {
     public string SearchPhrase { get; set; } = string.Empty;
 
-    private class SearchBookQueryHandler(IBookRepository bookRepository) : IRequestHandler<SearchBookQuery, IEnumerable<SearchDto>>
+    private class SearchBookQueryHandler(IBookRepository bookRepository, IFileStorageRepository fileStorageRepository) : IRequestHandler<SearchBookQuery, IEnumerable<SearchDto>>
     {
         private readonly IBookRepository _bookRepository = bookRepository;
+        private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
 
         public async Task<IEnumerable<SearchDto>> Handle(SearchBookQuery request, CancellationToken cancellationToken)
         {
@@ -25,12 +26,14 @@ public class SearchBookQuery : IRequest<IEnumerable<SearchDto>>
                 .Select(g => new SearchDto(
                     g.Key.Id,
                     g.Key.Name,
+                    g.Key.Image is not null ? _fileStorageRepository.GetFileUrl(g.Key.Image) : null,
                     g.Select(x => new SearchBookDto(
                         x.Book.Id,
                         x.Book.Title,
                         x.Book.Isbn,
                         x.Book.Description,
-                        x.Book.PageNumber))
+                        x.Book.PageNumber,
+                        x.Book.Image is not null ? _fileStorageRepository.GetFileUrl(x.Book.Image) : null))
                 ));
 
             return result;
