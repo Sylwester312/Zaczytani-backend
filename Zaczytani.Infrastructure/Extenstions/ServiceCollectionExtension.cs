@@ -29,4 +29,6 @@ public static class ServiceCollectionExtension
         services.AddScoped<ISeeder, Seeder>();
 
     }
+
+
 }

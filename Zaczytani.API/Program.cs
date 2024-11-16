@@ -20,6 +20,8 @@ var seeder = scope.ServiceProvider.GetRequiredService<ISeeder>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    await app.Services.MigrateDatabaseAsync();
+
     await seeder.Seed();
 
     app.UseSwagger();
