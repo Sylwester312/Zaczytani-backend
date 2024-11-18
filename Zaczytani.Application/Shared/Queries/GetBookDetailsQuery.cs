@@ -6,25 +6,14 @@ using Zaczytani.Application.Exceptions;
 
 namespace Zaczytani.Application.Shared.Queries;
 
-public class GetBookDetailsQuery : IRequest<BookDto>
+public class GetBookDetailsQuery(Guid BookId) : IRequest<BookDto>
 {
     public Guid BookId { get; }
 
-    public GetBookDetailsQuery(Guid bookId)
-    {
-        BookId = bookId;
-    }
-
-    private class GetBookDetailsQueryHandler : IRequestHandler<GetBookDetailsQuery, BookDto>
+    private class GetBookDetailsQueryHandler(IBookRepository BookRepository, IMapper Mapper)
     {
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
-
-        public GetBookDetailsQueryHandler(IBookRepository bookRepository, IMapper mapper)
-        {
-            _bookRepository = bookRepository;
-            _mapper = mapper;
-        }
 
         public async Task<BookDto> Handle(GetBookDetailsQuery request, CancellationToken cancellationToken)
         {

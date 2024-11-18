@@ -1,56 +1,49 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Zaczytani.Application.Exceptions;
 
-namespace Zaczytani.API.Middlewares
+namespace Zaczytani.API.Middlewares;
+
+public class ErrorHandlingMiddleware(RequestDelegate Next)
 {
-    public class ErrorHandlingMiddleware
+    public async Task InvokeAsync(HttpContext context)
     {
-        private readonly RequestDelegate _next;
-
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        try
         {
-            _next = next;
+            await Next(context);
+        }
+        catch (Exception ex)
+        {
+            await HandleExceptionAsync(context, ex);
+        }
+    }
+
+    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        HttpStatusCode statusCode;
+        string message;
+
+        switch (exception)
+        {
+            case NotFoundException notFoundException:
+                statusCode = HttpStatusCode.NotFound;
+                message = notFoundException.Message;
+                break;
+            default:
+                statusCode = HttpStatusCode.InternalServerError;
+                message = "An unexpected error occurred.";
+                break;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)statusCode;
+
+        var response = new
         {
-            try
-            {
-                await _next(context);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(context, ex);
-            }
-        }
+            error = message,
+            statusCode = (int)statusCode
+        };
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            context.Response.ContentType = "application/json";
-
-            // Przygotowanie domyślnego błędu
-            var response = new
-            {
-                message = exception.Message,
-                details = exception.InnerException?.Message,
-                stackTrace = exception.StackTrace
-            };
-
-            switch (exception)
-            {
-                case NotFoundException:
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    break;
-                default:
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    break;
-            }
-
-            return context.Response.WriteAsync(JsonSerializer.Serialize(response));
-        }
+        return context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
 }
