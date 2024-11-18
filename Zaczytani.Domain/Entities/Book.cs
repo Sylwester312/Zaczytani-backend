@@ -5,7 +5,7 @@ namespace Zaczytani.Domain.Entities;
 public class Book
 {
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
     [MaxLength(150)]

@@ -4,16 +4,17 @@ using Zaczytani.Application.Dtos;
 using Zaczytani.Domain.Repositories;
 using Zaczytani.Application.Exceptions;
 
-namespace Zaczytani.Application.Client.Queries;
+namespace Zaczytani.Application.Shared.Queries;
 
 public class GetBookDetailsQuery : IRequest<BookDto>
 {
-    public Guid BookId { get; }  // Publiczna właściwość BookId
+    public Guid BookId { get; }
 
     public GetBookDetailsQuery(Guid bookId)
     {
         BookId = bookId;
     }
+
     private class GetBookDetailsQueryHandler : IRequestHandler<GetBookDetailsQuery, BookDto>
     {
         private readonly IBookRepository _bookRepository;

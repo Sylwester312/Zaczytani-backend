@@ -1,10 +1,9 @@
-using AutoMapper;
-using Zaczytani.Application.Dtos;
 using Zaczytani.API.Extenstions;
 using Zaczytani.Application.Extenstions;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Infrastructure.Extenstions;
 using Zaczytani.Infrastructure.Seeders;
+using Zaczytani.API.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +34,8 @@ app.MapGroup("api/Identity")
     .MapIdentityApi<User>();
 
 app.UseCors("frontend");
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

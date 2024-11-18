@@ -42,10 +42,11 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetBookDetails(Guid id)
+    public async Task<ActionResult<BookDto>> GetBookDetails(Guid id)
     {
         var query = new GetBookDetailsQuery(id);
         var result = await _mediator.Send(query);
-        return result != null ? Ok(result) : NotFound();
+        return Ok(result);
     }
+
 }

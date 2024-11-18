@@ -12,7 +12,7 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
     public string Description { get; set; } = string.Empty;
     public string Isbn { get; set; } = string.Empty;
     public int PageNumber { get; set; }
-    public List<AuthorDto> Authors { get; set; } = [];
+    public List<AuthorDto> Authors { get; set; } = new();
     private Guid UserId { get; set; }
 
     public void SetUserId(Guid userId)
@@ -20,30 +20,21 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
         UserId = userId;
     }
 
-    private class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Guid>
+    private class CreateBookCommandHandler(IBookRepository bookRepository) : IRequestHandler<CreateBookCommand, Guid>
     {
-        private readonly IBookRepository _bookRepository;
-
-        public CreateBookCommandHandler(IBookRepository bookRepository)
-        {
-            _bookRepository = bookRepository;
-        }
-
         public async Task<Guid> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
             var book = new Book
             {
-                Id = Guid.NewGuid(),
                 Title = request.Title,
                 Description = request.Description,
                 Isbn = request.Isbn,
-                PageNumber = request.PageNumber,
-                Authors = []
+                PageNumber = request.PageNumber
             };
-
+    
             foreach (var authorDto in request.Authors)
             {
-                var existingAuthor = await _bookRepository.GetAuthorByIdAsync(authorDto.Id);
+                var existingAuthor = await bookRepository.GetAuthorByIdAsync(authorDto.Id);
 
                 if (existingAuthor != null)
                 {
@@ -60,8 +51,8 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
                 }
             }
 
-            await _bookRepository.AddAsync(book);
-            await _bookRepository.SaveChangesAsync();
+            await bookRepository.AddAsync(book);
+            await bookRepository.SaveChangesAsync();
 
             return book.Id;
         }
