@@ -34,7 +34,7 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     }
 
     [HttpGet("Search")]
-    public async Task<ActionResult<IEnumerable<BookDto>>> SearchBook([FromQuery] SearchBookQuery command)
+    public async Task<ActionResult<IEnumerable<SearchDto>>> SearchBook([FromQuery] SearchBookQuery command)
     {
         var books = await _mediator.Send(command);
 
