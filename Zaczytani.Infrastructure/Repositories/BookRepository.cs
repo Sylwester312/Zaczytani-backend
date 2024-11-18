@@ -10,7 +10,7 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
     private readonly BookDbContext _dbContext = dbContext;
 
     public async Task AddAsync(Book entity) => await _dbContext.AddAsync(entity);
-    
+   
     public IQueryable<Book> GetBySearchPhrase(string searchPhrase)
         => _dbContext.Books.Where(b => b.Title.Contains(searchPhrase) 
                                     || b.Isbn.Contains(searchPhrase) 
@@ -23,11 +23,11 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
             .Include(b => b.Authors)
             .FirstOrDefaultAsync(b => b.Id == bookId);
     }
-   
+    
     public async Task<Author?> GetAuthorByIdAsync(Guid authorId)
     {
         return await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
     }
-    
-    public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
+   
+   public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }
