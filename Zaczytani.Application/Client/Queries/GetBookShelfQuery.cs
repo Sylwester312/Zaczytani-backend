@@ -11,10 +11,7 @@ public class GetBookShelfQuery : IRequest<IEnumerable<BookDto>>
         private readonly IBookRepository _bookRepository = bookRepository;
         public Task<IEnumerable<BookDto>> Handle(GetBookShelfQuery request, CancellationToken cancellationToken)
         {
-            var books = new List<BookDto>
-            {
-                new BookDto(Guid.NewGuid(), "Tytuł", "1234567890", "Opis książki", 300, new List <AuthorDto>())
-            };
+            var books = new List<BookDto>();
 
             return Task.FromResult(books.AsEnumerable());
         }

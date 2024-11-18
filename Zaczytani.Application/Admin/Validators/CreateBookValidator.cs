@@ -10,7 +10,7 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
         RuleFor(x => x.Title)
             .NotEmpty().WithMessage("Book title is required.")
             .MinimumLength(2).WithMessage("Book title must be at least 2 characters long.")
-            .MaximumLength(100).WithMessage("Book title cannot exceed 100 characters.");
+            .MaximumLength(150).WithMessage("Book title cannot exceed 150 characters.");
 
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Description is required.")

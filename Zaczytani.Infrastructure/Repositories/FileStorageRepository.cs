@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Zaczytani.Domain.Repositories;
 using Zaczytani.Infrastructure.Configuration;
 
@@ -56,8 +57,13 @@ internal class FileStorageRepository : IFileStorageRepository
         return null;
     }
 
-    public string GetFileUrl(string fileName)
+    public string? GetFileUrl(string? fileName)
     {
+        if (fileName.IsNullOrEmpty())
+        {
+            return null;
+        }
+
         return $"{_apiBaseUrl}{fileName}";
     }
 }

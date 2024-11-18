@@ -11,10 +11,11 @@ public class Book
     [MaxLength(150)]
     public string Title { get; set; } = string.Empty;
 
-    [StringLength(13)]
+    [MinLength(10)]
+    [MaxLength(13)]
     public string Isbn { get; set; } = string.Empty;
 
-    [StringLength(1000)]
+    [MaxLength(1000)]
     public string Description {  get; set; } = string.Empty;
 
     [Required]

@@ -13,6 +13,6 @@ public class AuthorDtoValidator : AbstractValidator<AuthorDto>
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Author name is required.")
             .MinimumLength(2).WithMessage("Author name must be at least 2 characters long.")
-            .MaximumLength(100).WithMessage("Author name cannot exceed 100 characters.");
+            .MaximumLength(150).WithMessage("Author name cannot exceed 150 characters.");
     }
 }

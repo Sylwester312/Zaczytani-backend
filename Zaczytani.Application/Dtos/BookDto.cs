@@ -1,6 +1,4 @@
-﻿using Zaczytani.Domain.Entities;
+﻿namespace Zaczytani.Application.Dtos;
 
-namespace Zaczytani.Application.Dtos;
-
-public record BookDto(Guid Id, string Title, string Isbn, string Description, int PageNumber, IEnumerable<AuthorDto> Authors);
+public record BookDto(Guid Id, string Title, string Isbn, string Description, string? ImageUrl, int PageNumber, IEnumerable<AuthorDto> Authors);
 
