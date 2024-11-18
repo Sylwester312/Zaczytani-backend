@@ -3,6 +3,8 @@ using Zaczytani.Application.Extenstions;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Infrastructure.Extenstions;
 using Zaczytani.Infrastructure.Seeders;
+using Zaczytani.API.Middlewares;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
 
 var app = builder.Build();
 
@@ -33,6 +36,8 @@ app.MapGroup("api/Identity")
     .MapIdentityApi<User>();
 
 app.UseCors("frontend");
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
