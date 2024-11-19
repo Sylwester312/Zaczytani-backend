@@ -26,7 +26,12 @@ internal class FileStorageRepository : IFileStorageRepository
 
     public async Task<string> SaveFileAsync(IFormFile file)
     {
-        var fileName = $"{Guid.NewGuid()}_{file.FileName}";
+        Directory.CreateDirectory(_baseFolder);
+
+        var safeFileName = string.Concat(file.FileName.Split(Path.GetInvalidFileNameChars()))
+                          .Replace(" ", "_");
+
+        var fileName = $"{Guid.NewGuid()}_{safeFileName}";
         var filePath = Path.Combine(_baseFolder, fileName);
 
         using (var stream = new FileStream(filePath, FileMode.Create))

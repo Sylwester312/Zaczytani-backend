@@ -5,7 +5,6 @@ using Zaczytani.Domain.Repositories;
 namespace Zaczytani.API.Controllers;
 
 [ApiController]
-[Authorize]
 [Route("api/[controller]")]
 public class FileController(IFileStorageRepository fileStorageRepository) : ControllerBase
 {
@@ -19,6 +18,7 @@ public class FileController(IFileStorageRepository fileStorageRepository) : Cont
         return fileBytes is null ? NotFound() : File(fileBytes, "image/jpeg");
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> UploadFile(IFormFile file)
     {
