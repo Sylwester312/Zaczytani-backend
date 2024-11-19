@@ -34,7 +34,7 @@ internal class FileStorageRepository : IFileStorageRepository
             await file.CopyToAsync(stream);
         }
 
-        return filePath;
+        return fileName;
     }
 
     public async Task<byte[]?> GetFileAsync(string fileName)
