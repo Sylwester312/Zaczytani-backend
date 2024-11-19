@@ -36,8 +36,7 @@ Projekt
 ## Konfiguracja środowiska
 
 ### Wymagania systemowe:
-- .NET SDK (wersja zgodna z wersją używaną w projekcie, np. .NET 8.0 lub nowszy).
-- SQL Server (np. SQL Server 2019 lub nowszy).
+- Docker Desktop
 - Visual Studio.
 
 ### Klonowanie repozytorium:
@@ -53,26 +52,30 @@ W pliku `appsettings.Development.json` w warstwie **API** znajdź sekcję `Conne
 
 ```json
 "ConnectionStrings": {
-  "ZaczytaniDb": "Server=(localdb)\\mssqllocaldb;Database=Zaczytani;Trusted_Connection=True"
+  "ZaczytaniDb": "Server=mssql-db;Database=Zaczytani;User=sa;Password=YourStrongPassword123!;TrustServerCertificate=true"
 }
 ```
 ### Wykonanie migracji i aktualizacja bazy danych:
-Aby zaktualizować bazę danych do najnowszej wersji zgodnie z migracjami, otwórz **Narzędzia → Menadżer pakietów NuGet → Konsola Menedżera Pakietów** w Visual Studio lub terminal i wykonaj komendę `Update-Database`. Ten krok wykona migracje i zaktualizuje strukturę bazy danych.
+Migracje powinny zostać zaaplikowane automatycznie po uruchomieniu projektu. Sprawdź krok następny jak uruchomić projekt.
 
 ### Zweryfikowanie poprawności migracji:
 1. Otwórz **SQL Server Management Studio** i połącz się z instancją SQL Server.
-2. Zweryfikuj poprawność utworzenia bazy **Zaczytani** oraz poprawność utworzenia tabel.
+1. Credentiale do połączenia się z bazą:
+	1. URL: localhost,1433
+	1. login: sa
+	1. hasło: YourStrongPassword123!
+3. Zweryfikuj poprawność utworzenia bazy **Zaczytani** oraz poprawność utworzenia tabel.
 
 ## Instrukcja uruchomienia
 
 ### Uruchomienie aplikacji:
 1. Otwórz projekt w Visual Studio lub Visual Studio Code.
-2. Ustaw projekt startowy na **API**.
-3. Uruchom aplikację, korzystając ze skrótu F5 lub komendy `dotnet run --project API`.  
-Aplikacja będzie dostępna pod adresem `http://localhost:5062` lub `https://localhost:7083`.
+2. Ustaw projekt startowy na **docker-compose**.
+3. Uruchom aplikację, korzystając ze skrótu F5.  
+Aplikacja będzie dostępna pod adresem `http://localhost:52000` lub `https://localhost:52001`.
 
 ### Testowanie API:
-Po uruchomieniu możesz przetestować API za pomocą narzędzi takich jak **Postman** lub **Swagger**. Swagger powinien być dostępny pod adresem `https://localhost:7083/swagger`.
+Po uruchomieniu możesz przetestować API za pomocą narzędzi takich jak **Postman** lub **Swagger**. Swagger powinien być dostępny pod adresem `https://localhost:52001/swagger`.
 
 ## Struktura warstw
 
@@ -104,6 +107,6 @@ Poniżej znajduje się szczegółowy opis poszczególnych warstw projektu:
 Jeśli chcesz dodać nową migrację, wykonaj poniższe kroki:
 
 1. Otwórz `Narzędzia → Menadżer pakietów NuGet → Konsola Menedżera Pakietów`
-2. Upewnij się, że warstwa **Infrastructure** jest ustawiona jako projekt migracji.
-3. W konsoli wykonaj: `Add-Migration <NazwaMigracji>`
-4. Po utworzeniu migracji zaktualizuj bazę danych: `Update-Database`
+2. W konsoli wykonaj: `dotnet ef migrations add <NazwaMigracji> --project Zaczytani.Infrastructure --startup-project Zaczytani.API`
+	1. W razie błędów spróbuj zainstalować `dotnet tool install --global dotnet-ef`
+3. Po utworzeniu migracji wystarczy uruchomić projekt, aby się wykonały wszystkie migracje automatycznie
