@@ -11,6 +11,7 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Isbn { get; set; } = string.Empty;
+    public string FileName { get; set; } = string.Empty;
     public int PageNumber { get; set; }
     public List<AuthorDto> Authors { get; set; } = new();
     private Guid UserId { get; set; }
@@ -29,7 +30,8 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
                 Title = request.Title,
                 Description = request.Description,
                 Isbn = request.Isbn,
-                PageNumber = request.PageNumber
+                PageNumber = request.PageNumber,
+                Image = request.FileName,
             };
     
             foreach (var authorDto in request.Authors)
