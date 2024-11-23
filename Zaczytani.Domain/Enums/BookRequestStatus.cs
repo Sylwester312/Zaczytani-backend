@@ -1,0 +1,8 @@
+﻿namespace Zaczytani.Domain.Enums;
+
+public enum BookRequestStatus
+{
+    Pending = 0,
+    Accepted = 1,
+    Rejected = 2,
+}
