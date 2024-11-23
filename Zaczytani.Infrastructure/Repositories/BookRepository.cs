@@ -23,11 +23,6 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
             .Include(b => b.Authors)
             .FirstOrDefaultAsync(b => b.Id == bookId);
     }
-    
-    public async Task<Author?> GetAuthorByIdAsync(Guid authorId)
-    {
-        return await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
-    }
    
    public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }

@@ -25,6 +25,7 @@ public static class ServiceCollectionExtension
         services.Configure<FileStorageOptions>(configuration.GetSection("FileStorage"));
         services.AddSingleton<IFileStorageRepository, FileStorageRepository>();
 
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<ISeeder, Seeder>();
 
