@@ -32,8 +32,7 @@ public class BookRequest
 
     public User CreatedBy { get; set; } = new();
 
-
     public BookRequestStatus Status = BookRequestStatus.Pending;
 
-    public List<Author> Authors { get; set; } = [];
+    public string Authors { get; set; } = string.Empty;
 }

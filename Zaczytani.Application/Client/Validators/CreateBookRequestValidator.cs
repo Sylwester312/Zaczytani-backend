@@ -28,11 +28,6 @@ public class CreateBookRequestCommandValidator : AbstractValidator<CreateBookReq
             .LessThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today)).When(x => x.ReleaseDate.HasValue).WithMessage("Release date cannot be in the future.");
 
         RuleFor(x => x.Authors)
-            .NotNull().WithMessage("Authors list cannot be null.")
-            .ForEach(author =>
-            {
-                author.NotNull().WithMessage("Author cannot be null.");
-                author.SetValidator(new AuthorDtoValidator());
-            });
+            .NotEmpty().WithMessage("Authors are required.");
     }
 }

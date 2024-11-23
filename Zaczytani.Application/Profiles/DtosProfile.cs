@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using Zaczytani.Application.Dtos;
 using Zaczytani.Domain.Entities;
 
-namespace Zaczytani.Application.Dtos;
+namespace Zaczytani.Application.Profiles;
 
 internal class DtosProfile : Profile
 {
@@ -11,7 +12,7 @@ internal class DtosProfile : Profile
         CreateMap<Book, BookDto>();
         #endregion
 
-        #region
+        #region Author
         CreateMap<Author, AuthorDto>();
         #endregion
     }
