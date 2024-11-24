@@ -15,10 +15,10 @@ public class BookRequest
 
     [MinLength(10)]
     [MaxLength(13)]
-    public string? Isbn { get; set; } = string.Empty;
+    public string? Isbn { get; set; }
 
     [MaxLength(1000)]
-    public string? Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     public int? PageNumber { get; set; }
 
@@ -28,11 +28,13 @@ public class BookRequest
 
     public string Authors { get; set; } = string.Empty;
 
-    public string? PublishingHouse { get; set; } = string.Empty;
+    public string? PublishingHouse { get; set; }
 
     public List<BookGenre> Genre { get; set; } = [];
 
-    public string? Series { get; set; } = string.Empty;
+    public string? Series { get; set; }
+
+    public DateTime CreatedDate { get; set; } = new DateTime();
 
     [Required]
     [ForeignKey(nameof(User))]
