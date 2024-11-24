@@ -61,7 +61,7 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         return Ok(genres);
     }
 
-    [HttpGet("PublisingHouses")]
+    [HttpGet("PublishingHouses")]
     public async Task<ActionResult<BookDto>> GetPublishingHouses()
     {
         var result = await _mediator.Send(new GetPublishingHousesQuery());
