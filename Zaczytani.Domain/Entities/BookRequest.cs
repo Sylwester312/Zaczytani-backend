@@ -26,13 +26,20 @@ public class BookRequest
 
     public string? Image { get; set; }
 
+    public string Authors { get; set; } = string.Empty;
+
+    public string? PublishingHouse { get; set; } = string.Empty;
+
+    public List<BookGenre> Genre { get; set; } = [];
+
+    public string? Series { get; set; } = string.Empty;
+
     [Required]
     [ForeignKey(nameof(User))]
-    public Guid CreatedById { get; set; }
+    public Guid UserId { get; set; }
 
-    public User CreatedBy { get; set; } = new();
+    public User User { get; set; } = new();
 
     public BookRequestStatus Status = BookRequestStatus.Pending;
-
-    public string Authors { get; set; } = string.Empty;
 }
+

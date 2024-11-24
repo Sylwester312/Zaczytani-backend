@@ -9,11 +9,16 @@ internal class DtosProfile : Profile
     public DtosProfile()
     {
         #region Book
-        CreateMap<Book, BookDto>();
+        CreateMap<Book, BookDto>()
+            .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name));
         #endregion
 
         #region Author
         CreateMap<Author, AuthorDto>();
+        #endregion
+
+        #region PublishingHouse
+        CreateMap<PublishingHouse, PublishingHouseDto>();
         #endregion
     }
 }

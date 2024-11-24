@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.Domain.Entities;
 
@@ -15,19 +17,32 @@ public class Book
     [MaxLength(13)]
     public string Isbn { get; set; } = string.Empty;
 
+    [Required]
     [MaxLength(1000)]
     public string Description {  get; set; } = string.Empty;
 
     [Required]
     public int PageNumber { get; set; }
 
+    [Required]
+    public DateOnly ReleaseDate { get; set; }
+
     public string? Image { get; set; }
+
+    public List<BookGenre> Genre { get; set; } = [];
+
+    public string? Series { get; set; }
 
     /// <summary>
     /// Admin who created the book.
     /// Need for future support and debugging.
     /// </summary>
-    public User? CreatedBy { get; set; }
+    [ForeignKey(nameof(User))]
+    public Guid? UserId { get; set; }
+    
+    public virtual User? User { get; set; }
 
-    public List<Author> Authors { get; set; } = [];
+    public virtual PublishingHouse PublishingHouse { get; set; } = null!;
+
+    public virtual List<Author> Authors { get; set; } = [];
 }

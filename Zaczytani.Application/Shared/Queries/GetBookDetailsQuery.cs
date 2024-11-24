@@ -19,15 +19,19 @@ public record GetBookDetailsQuery(Guid BookId) : IRequest<BookDto>
             var book = await _bookRepository.GetByIdAsync(request.BookId)
                 ?? throw new NotFoundException($"Book with ID {request.BookId} was not found.");
             
-            var bookDto = new BookDto(
-                Id: book.Id,
-                Title: book.Title,
-                Isbn: book.Isbn,
-                Description: book.Description,
-                ImageUrl: _fileStorageRepository.GetFileUrl(book.Image),
-                PageNumber: book.PageNumber,
-                Authors: _mapper.Map<IEnumerable<AuthorDto>>(book.Authors));
-            
+            var bookDto = _mapper.Map<BookDto>(book);
+            bookDto.ImageUrl = _fileStorageRepository.GetFileUrl(book.Image);
+
+            //var bookDto = new BookDto(
+            //    Id: book.Id,
+            //    Title: book.Title,
+            //    Isbn: book.Isbn,
+            //    Description: book.Description,
+            //    PageNumber: book.PageNumber,
+            //    ReleaseDate: book.ReleaseDate,
+            //    ImageUrl: _fileStorageRepository.GetFileUrl(book.Image),
+            //    Authors: _mapper.Map<IEnumerable<AuthorDto>>(book.Authors));
+
             return bookDto;
         }
     }

@@ -21,6 +21,7 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
     {
         return await _dbContext.Books
             .Include(b => b.Authors)
+            .Include(b => b.PublishingHouse)
             .FirstOrDefaultAsync(b => b.Id == bookId);
     }
    

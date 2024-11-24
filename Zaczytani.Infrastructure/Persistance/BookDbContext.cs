@@ -9,4 +9,5 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
     internal DbSet<Book> Books { get; set; } = null!;
     internal DbSet<BookRequest> BookRequests { get; set; } = null!;
     internal DbSet<Author> Authors { get; set; } = null!;
+    internal DbSet<PublishingHouse> PublishingHouses { get; set; } = null!;
 }

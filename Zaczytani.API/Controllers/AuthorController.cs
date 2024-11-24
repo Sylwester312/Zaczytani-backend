@@ -14,7 +14,7 @@ public class AuthorController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BookDto>>> GetAll()
+    public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAll()
     {
         var authors = await _mediator.Send(new GetAuthorsQuery());
         return Ok(authors);
