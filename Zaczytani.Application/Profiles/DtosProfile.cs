@@ -23,6 +23,7 @@ internal class DtosProfile : Profile
 
         #region BookRequest
         CreateMap<BookRequest, BookRequestDto>();
+        CreateMap<BookRequest, UserBookRequestDto>();
         #endregion
 
         #region User
