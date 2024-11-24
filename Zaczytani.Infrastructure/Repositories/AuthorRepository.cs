@@ -9,6 +9,8 @@ internal class AuthorRepository(BookDbContext dbContext) : IAuthorRepository
 {
     private readonly BookDbContext _dbContext = dbContext;
 
+    public IQueryable<Author> GetAll() => _dbContext.Authors;
+
     public async Task<Author?> GetByIdAsync(Guid authorId)
     {
         return await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
