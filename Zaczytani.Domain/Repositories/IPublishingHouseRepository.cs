@@ -5,5 +5,6 @@ namespace Zaczytani.Domain.Repositories;
 public interface IPublishingHouseRepository
 {
     IQueryable<PublishingHouse> GetAll();
+    Task<PublishingHouse?> GetByIdAsync(Guid id);
     Task SaveChangesAsync();
 }

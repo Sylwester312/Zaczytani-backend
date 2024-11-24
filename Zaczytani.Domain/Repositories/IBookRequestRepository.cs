@@ -7,5 +7,6 @@ public interface IBookRequestRepository
     Task AddAsync(BookRequest entity);
     IQueryable<BookRequest> GetAllPending();
     IQueryable<BookRequest> GetByUserId(Guid userId);
-    Task SaveChangesAsync();
+    Task<BookRequest?> GetByIdAsync(Guid id);
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
