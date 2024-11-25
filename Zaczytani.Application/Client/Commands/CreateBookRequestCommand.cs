@@ -36,7 +36,7 @@ public class CreateBookRequestCommand : IRequest<Guid>, IUserIdAssignable
             bookRequest.UserId = request.UserId;
 
             await _bookRequestRepository.AddAsync(bookRequest);
-            await _bookRequestRepository.SaveChangesAsync();
+            await _bookRequestRepository.SaveChangesAsync(cancellationToken);
 
             return bookRequest.Id;
         }

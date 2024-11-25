@@ -34,13 +34,13 @@ public class BookRequest
 
     public string? Series { get; set; }
 
-    public DateTime CreatedDate { get; set; } = new DateTime();
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     [Required]
     [ForeignKey(nameof(User))]
     public Guid UserId { get; set; }
 
-    public User User { get; set; } = new();
+    public virtual User User { get; set; } = null!;
 
     public BookRequestStatus Status = BookRequestStatus.Pending;
 }

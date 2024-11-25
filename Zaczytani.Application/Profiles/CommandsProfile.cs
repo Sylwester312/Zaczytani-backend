@@ -9,7 +9,8 @@ internal class CommandsProfile : Profile
 {
     public CommandsProfile()
     {
-        CreateMap<CreateBookRequestCommand, BookRequest>();
+        CreateMap<CreateBookRequestCommand, BookRequest>()
+            .ForMember(x => x.Image, opt => opt.MapFrom(src => src.FileName));
         CreateMap<AcceptBookRequestCommand, CreateBookCommand>();
     }
 }
