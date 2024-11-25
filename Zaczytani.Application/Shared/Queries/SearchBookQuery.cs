@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Domain.Repositories;
@@ -9,8 +10,9 @@ public class SearchBookQuery : IRequest<IEnumerable<SearchDto>>
 {
     public string SearchPhrase { get; set; } = string.Empty;
 
-    private class SearchBookQueryHandler(IBookRepository bookRepository, IFileStorageRepository fileStorageRepository) : IRequestHandler<SearchBookQuery, IEnumerable<SearchDto>>
+    private class SearchBookQueryHandler(IBookRepository bookRepository, IFileStorageRepository fileStorageRepository, IMapper mapper) : IRequestHandler<SearchBookQuery, IEnumerable<SearchDto>>
     {
+        private readonly IMapper _mapper = mapper;
         private readonly IBookRepository _bookRepository = bookRepository;
         private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
 
@@ -18,6 +20,7 @@ public class SearchBookQuery : IRequest<IEnumerable<SearchDto>>
         {
             var books = await _bookRepository.GetBySearchPhrase(request.SearchPhrase)
                 .Include(b => b.Authors)
+                .Include(b => b.PublishingHouse)
                 .ToListAsync(cancellationToken);
 
             var result = books
@@ -27,13 +30,11 @@ public class SearchBookQuery : IRequest<IEnumerable<SearchDto>>
                     g.Key.Id,
                     g.Key.Name,
                     g.Key.Image is not null ? _fileStorageRepository.GetFileUrl(g.Key.Image) : null,
-                    g.Select(x => new SearchBookDto(
-                        x.Book.Id,
-                        x.Book.Title,
-                        x.Book.Isbn,
-                        x.Book.Description,
-                        x.Book.PageNumber,
-                        x.Book.Image is not null ? _fileStorageRepository.GetFileUrl(x.Book.Image) : null))
+                    g.Select(x => {
+                        var bookDto = _mapper.Map<BookDto>(x.Book);
+                        bookDto.ImageUrl = x.Book.Image is not null ? _fileStorageRepository.GetFileUrl(x.Book.Image) : null;
+                        return bookDto;
+                    })
                 ));
 
             return result;

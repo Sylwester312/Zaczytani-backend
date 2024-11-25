@@ -21,8 +21,10 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
         UserId = userId;
     }
 
-    private class CreateBookCommandHandler(IBookRepository bookRepository) : IRequestHandler<CreateBookCommand, Guid>
+    private class CreateBookCommandHandler(IBookRepository bookRepository, IAuthorRepository authorRepository) : IRequestHandler<CreateBookCommand, Guid>
     {
+        private readonly IBookRepository _bookRepository = bookRepository;
+        private readonly IAuthorRepository _authorRepository = authorRepository;
         public async Task<Guid> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
             var book = new Book
@@ -36,7 +38,7 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
     
             foreach (var authorDto in request.Authors)
             {
-                var existingAuthor = await bookRepository.GetAuthorByIdAsync(authorDto.Id);
+                var existingAuthor = await _authorRepository.GetByIdAsync(authorDto.Id);
 
                 if (existingAuthor != null)
                 {
@@ -53,8 +55,8 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
                 }
             }
 
-            await bookRepository.AddAsync(book);
-            await bookRepository.SaveChangesAsync();
+            await _bookRepository.AddAsync(book);
+            await _bookRepository.SaveChangesAsync();
 
             return book.Id;
         }

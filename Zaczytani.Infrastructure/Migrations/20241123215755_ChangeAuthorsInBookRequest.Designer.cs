@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zaczytani.Infrastructure.Persistance;
 
@@ -11,9 +12,11 @@ using Zaczytani.Infrastructure.Persistance;
 namespace Zaczytani.Infrastructure.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    partial class BookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241123215755_ChangeAuthorsInBookRequest")]
+    partial class ChangeAuthorsInBookRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,14 +168,13 @@ namespace Zaczytani.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("Genre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
@@ -185,28 +187,14 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.Property<int>("PageNumber")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("PublishingHouseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateOnly>("ReleaseDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Series")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PublishingHouseId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("Books");
                 });
@@ -221,13 +209,12 @@ namespace Zaczytani.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("Genre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
@@ -239,44 +226,19 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.Property<int?>("PageNumber")
                         .HasColumnType("int");
 
-                    b.Property<string>("PublishingHouse")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateOnly?>("ReleaseDate")
                         .HasColumnType("date");
-
-                    b.Property<string>("Series")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("BookRequests");
-                });
-
-            modelBuilder.Entity("Zaczytani.Domain.Entities.PublishingHouse", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PublishingHouses");
                 });
 
             modelBuilder.Entity("Zaczytani.Domain.Entities.User", b =>
@@ -449,30 +411,22 @@ namespace Zaczytani.Infrastructure.Migrations
 
             modelBuilder.Entity("Zaczytani.Domain.Entities.Book", b =>
                 {
-                    b.HasOne("Zaczytani.Domain.Entities.PublishingHouse", "PublishingHouse")
+                    b.HasOne("Zaczytani.Domain.Entities.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("PublishingHouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CreatedById");
 
-                    b.HasOne("Zaczytani.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("PublishingHouse");
-
-                    b.Navigation("User");
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("Zaczytani.Domain.Entities.BookRequest", b =>
                 {
-                    b.HasOne("Zaczytani.Domain.Entities.User", "User")
+                    b.HasOne("Zaczytani.Domain.Entities.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("CreatedBy");
                 });
 #pragma warning restore 612, 618
         }

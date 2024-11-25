@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 namespace Zaczytani.API.Extenstions;
 
@@ -38,5 +39,10 @@ public static class WebApplicationBuilderExtenstions
                 policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
             }
         ));
+
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
     }
 }

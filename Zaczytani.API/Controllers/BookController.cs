@@ -6,6 +6,7 @@ using Zaczytani.Application.Client.Queries;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
 using Zaczytani.Application.Shared.Queries;
+using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.API.Controllers;
 
@@ -49,4 +50,21 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         return Ok(result);
     }
 
+    [HttpGet("Genres")]
+    public ActionResult<IEnumerable<BookGenre>> GetBookGenres()
+    {
+        var genres = Enum.GetValues(typeof(BookGenre))
+                          .Cast<BookGenre>()
+                          .Select(g => g.ToString())
+                          .ToList();
+
+        return Ok(genres);
+    }
+
+    [HttpGet("PublishingHouses")]
+    public async Task<ActionResult<BookDto>> GetPublishingHouses()
+    {
+        var result = await _mediator.Send(new GetPublishingHousesQuery());
+        return Ok(result);
+    }
 }
