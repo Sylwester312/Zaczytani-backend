@@ -15,5 +15,9 @@ internal class BookRequestRepository(BookDbContext dbContext) : IBookRequestRepo
         .Where(b => b.Status == BookRequestStatus.Pending)
         .OrderBy(b => b.CreatedDate);
 
+    public IQueryable<BookRequest> GetByUserId(Guid userId) => _dbContext.BookRequests
+        .Where(b => b.UserId == userId)
+        .OrderBy(b => b.CreatedDate);
+
     public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }
