@@ -20,5 +20,13 @@ internal class DtosProfile : Profile
         #region PublishingHouse
         CreateMap<PublishingHouse, PublishingHouseDto>();
         #endregion
+
+        #region BookRequest
+        CreateMap<BookRequest, BookRequestDto>();
+        #endregion
+
+        #region User
+        CreateMap<User, UserDto>();
+        #endregion
     }
 }

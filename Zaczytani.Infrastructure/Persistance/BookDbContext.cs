@@ -10,4 +10,13 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
     internal DbSet<BookRequest> BookRequests { get; set; } = null!;
     internal DbSet<Author> Authors { get; set; } = null!;
     internal DbSet<PublishingHouse> PublishingHouses { get; set; } = null!;
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<BookRequest>()
+            .Property(b => b.Status)
+            .HasConversion<int>();
+    }
 }

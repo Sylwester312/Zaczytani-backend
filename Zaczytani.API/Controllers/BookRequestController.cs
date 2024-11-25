@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Zaczytani.Application.Admin.Queries;
 using Zaczytani.Application.Client.Commands;
+using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
 
 namespace Zaczytani.API.Controllers;
@@ -19,5 +21,12 @@ public class BookRequestController(IMediator mediator) : ControllerBase
     {
         var id = await _mediator.Send(command);
         return Ok(new { id });
+    }
+
+    [HttpGet("Pending")]
+    public async Task<ActionResult<IEnumerable<BookRequestDto>>> GetBookRequests()
+    {
+        var bookRequests = await _mediator.Send(new GetBookRequestsQuery());
+        return Ok(bookRequests);
     }
 }
