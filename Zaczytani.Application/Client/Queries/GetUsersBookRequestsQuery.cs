@@ -16,16 +16,20 @@ public class GetUsersBookRequestsQuery : IRequest<IEnumerable<UserBookRequestDto
         UserId = userId;
     }
 
-    private class GetUsersBookRequestsQueryHandler(IBookRequestRepository bookRequestRepository, IMapper mapper) : IRequestHandler<GetUsersBookRequestsQuery, IEnumerable<UserBookRequestDto>>
+    private class GetUsersBookRequestsQueryHandler(IBookRequestRepository bookRequestRepository, IFileStorageRepository fileStorageRepository, IMapper mapper) : IRequestHandler<GetUsersBookRequestsQuery, IEnumerable<UserBookRequestDto>>
     {
         private readonly IBookRequestRepository _bookRequestRepository = bookRequestRepository;
+        private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
         private readonly IMapper _mapper = mapper;
 
         public async Task<IEnumerable<UserBookRequestDto>> Handle(GetUsersBookRequestsQuery request, CancellationToken cancellationToken)
         {
             var bookRequests = await _bookRequestRepository.GetByUserId(request.UserId).ToListAsync(cancellationToken);
 
-            return _mapper.Map<IEnumerable<UserBookRequestDto>>(bookRequests);
+            var bookRequestDtos = _mapper.Map<IEnumerable<UserBookRequestDto>>(bookRequests);
+            bookRequestDtos.ToList().ForEach(b => b.Image = _fileStorageRepository.GetFileUrl(b.Image));
+
+            return bookRequestDtos;
         }
     }
 }

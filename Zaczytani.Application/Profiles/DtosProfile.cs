@@ -22,7 +22,8 @@ internal class DtosProfile : Profile
         #endregion
 
         #region BookRequest
-        CreateMap<BookRequest, BookRequestDto>();
+        CreateMap<BookRequest, BookRequestDto>()
+            .ForMember(x => x.FileName, opt => opt.MapFrom(src => src.Image));
         CreateMap<BookRequest, UserBookRequestDto>();
         #endregion
 

@@ -1,4 +1,5 @@
-﻿using Zaczytani.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Repositories;
 using Zaczytani.Infrastructure.Persistance;
 
@@ -9,6 +10,8 @@ internal class PublishingHouseRepository(BookDbContext dbContext) : IPublishingH
     private readonly BookDbContext _dbContext = dbContext;
 
     public IQueryable<PublishingHouse> GetAll() => _dbContext.PublishingHouses;
+
+    public async Task<PublishingHouse?> GetByIdAsync(Guid id) => await _dbContext.PublishingHouses.FirstOrDefaultAsync(a => a.Id == id);
 
     public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }

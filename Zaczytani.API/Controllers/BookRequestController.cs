@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Zaczytani.Application.Admin.Commands;
 using Zaczytani.Application.Admin.Queries;
 using Zaczytani.Application.Client.Commands;
 using Zaczytani.Application.Client.Queries;
@@ -22,6 +23,14 @@ public class BookRequestController(IMediator mediator) : ControllerBase
     {
         var id = await _mediator.Send(command);
         return Ok(new { id });
+    }
+
+    [HttpPost("Accept/{id}")]
+    public async Task<IActionResult> AcceptBookRequest([FromRoute] Guid id, [FromBody] AcceptBookRequestCommand command)
+    {
+        command.SetId(id);
+        await _mediator.Send(command);
+        return Ok();
     }
 
     [HttpGet]

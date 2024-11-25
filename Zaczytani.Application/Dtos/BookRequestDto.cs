@@ -10,7 +10,8 @@ public class BookRequestDto
     public string? Description { get; set; }
     public int? PageNumber { get; set; }
     public DateOnly? ReleaseDate { get; set; }
-    public string? Image { get; set; }
+    public string? ImageUrl { get; set; }
+    public string? FileName { get; set; }
     public string Authors { get; set; } = string.Empty;
     public string? PublishingHouse { get; set; }
     public List<BookGenre> Genre { get; set; } = [];

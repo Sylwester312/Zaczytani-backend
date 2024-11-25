@@ -2,6 +2,7 @@
 using Zaczytani.Domain.Repositories;
 using Zaczytani.Domain.Enums;
 using Zaczytani.Infrastructure.Persistance;
+using Microsoft.EntityFrameworkCore;
 
 namespace Zaczytani.Infrastructure.Repositories;
 
@@ -19,5 +20,7 @@ internal class BookRequestRepository(BookDbContext dbContext) : IBookRequestRepo
         .Where(b => b.UserId == userId)
         .OrderBy(b => b.CreatedDate);
 
-    public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
+    public async Task<BookRequest?> GetByIdAsync(Guid id) => await _dbContext.BookRequests.FirstOrDefaultAsync(b => b.Id == id);
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken = default) => _dbContext.SaveChangesAsync(cancellationToken);
 }
