@@ -11,8 +11,7 @@ public class UserBook
     public DateTime DrawnDate { get; set; }
 
     [ForeignKey(nameof(UserId))]
-    public virtual User User { get; set; } = null!;
-
+    public virtual User User { get; set; }
     [ForeignKey(nameof(BookId))]
-    public virtual Book Book { get; set; } = null!;
+    public virtual Book Book { get; set; }
 }

@@ -15,7 +15,6 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 
-
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
