@@ -67,4 +67,18 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         var result = await _mediator.Send(new GetPublishingHousesQuery());
         return Ok(result);
     }
+
+    [HttpGet("RandomBook")]
+    public async Task<ActionResult<BookDto>> GetRandomBook()
+    {
+        var result = await _mediator.Send(new GetRandomBookQuery());
+        return Ok(result);
+    }
+
+    [HttpGet("HasDrawnBookToday")]
+    public async Task<ActionResult<bool>> HasDrawnBookToday()
+    {
+        var result = await _mediator.Send(new HasDrawnBookTodayQuery());
+        return Ok(result);
+    }
 }

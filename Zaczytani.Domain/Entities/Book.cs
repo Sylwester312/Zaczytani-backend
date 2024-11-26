@@ -45,4 +45,5 @@ public class Book
     public virtual PublishingHouse PublishingHouse { get; set; } = null!;
 
     public virtual List<Author> Authors { get; set; } = [];
+    public bool IsRead { get; set; }
 }
