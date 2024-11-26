@@ -31,7 +31,7 @@ public class SearchBookQuery : IRequest<IEnumerable<SearchDto>>
                     g.Key.Name,
                     g.Key.Image is not null ? _fileStorageRepository.GetFileUrl(g.Key.Image) : null,
                     g.Select(x => {
-                        var bookDto = _mapper.Map<BookDto>(x.Book);
+                        var bookDto = _mapper.Map<SearchBookDto>(x.Book);
                         bookDto.ImageUrl = x.Book.Image is not null ? _fileStorageRepository.GetFileUrl(x.Book.Image) : null;
                         return bookDto;
                     })
