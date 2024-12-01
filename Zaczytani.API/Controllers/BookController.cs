@@ -6,8 +6,8 @@ using Zaczytani.Application.Client.Queries;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
 using Zaczytani.Application.Shared.Queries;
-using Zaczytani.Domain.DescriptionEnumConver;
 using Zaczytani.Domain.Enums;
+using Zaczytani.Domain.Helpers;
 
 namespace Zaczytani.API.Controllers;
 
