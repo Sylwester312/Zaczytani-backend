@@ -9,6 +9,7 @@ using Zaczytani.Application.Filters;
 using Zaczytani.Application.Shared.Queries;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Enums;
+using Zaczytani.Domain.Helpers;
 
 namespace Zaczytani.API.Controllers;
 
@@ -55,10 +56,7 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     [HttpGet("Genres")]
     public ActionResult<IEnumerable<BookGenre>> GetBookGenres()
     {
-        var genres = Enum.GetValues(typeof(BookGenre))
-                          .Cast<BookGenre>()
-                          .Select(g => g.ToString())
-                          .ToList();
+        var genres = EnumHelper.GetEnumDescriptions<BookGenre>();
 
         return Ok(genres);
     }

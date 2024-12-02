@@ -46,4 +46,11 @@ public class BookRequestController(IMediator mediator) : ControllerBase
         var bookRequests = await _mediator.Send(new GetBookRequestsQuery());
         return Ok(bookRequests);
     }
+
+    [HttpGet("GeneratedBookDetails")]
+    public async Task<ActionResult<IEnumerable<GeneratedBookDto>>> GetGeneratedBookDetails([FromQuery] GetGeneratedBookDetailsQuery query)
+    {
+        var bookDetails = await _mediator.Send(query);
+        return Ok(bookDetails);
+    }
 }

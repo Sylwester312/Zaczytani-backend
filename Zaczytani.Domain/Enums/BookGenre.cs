@@ -1,33 +1,60 @@
-﻿namespace Zaczytani.Domain.Enums;
+﻿using System.ComponentModel;
+
+namespace Zaczytani.Domain.Enums;
 
 public enum BookGenre
 {
     // Gatunki fikcji
-    Fiction,            // Literatura ogólna
-    Romance,            // Romans
-    Mystery,            // Kryminał i sensacja
-    Thriller,           // Thriller
-    Horror,             // Horror
-    Fantasy,            // Fantasy
-    ScienceFiction,     // Science fiction
-    HistoricalFiction,  // Powieść historyczna
-    YoungAdult,         // Literatura młodzieżowa
-    Adventure,          // Powieść przygodowa
-    Comedy,             // Komedia
-    Drama,              // Dramat
+    [Description("Literatura ogólna")]
+    Fiction,
+    [Description("Romans")]
+    Romance,
+    [Description("Kryminał i sensacja")]
+    Mystery,
+    [Description("Thriller")]
+    Thriller,
+    [Description("Horror")]
+    Horror,
+    [Description("Fantasy")]
+    Fantasy,
+    [Description("Science fiction")]
+    ScienceFiction,
+    [Description("Powieść historyczna")]
+    HistoricalFiction,
+    [Description("Literatura młodzieżowa")]
+    YoungAdult,
+    [Description("Powieść przygodowa")]
+    Adventure,
+    [Description("Komedia")]
+    Comedy,
+    [Description("Dramat")]
+    Drama,
 
     // Gatunki non-fiction
-    Biography,          // Biografie i autobiografie
-    Memoir,             // Pamiętniki i wspomnienia
-    SelfHelp,           // Poradniki
-    History,            // Książki historyczne
-    Science,            // Nauka i technologia
-    Philosophy,         // Filozofia
-    Religion,           // Religia i duchowość
-    Travel,             // Literatura podróżnicza
-    Politics,           // Polityka i społeczeństwo
-    Business,           // Biznes i zarządzanie
-    Art,                // Sztuka i design
-    Psychology,         // Psychologia
-    Education           // Książki edukacyjne i akademickie
+    [Description("Biografie i autobiografie")]
+    Biography,
+    [Description("Pamiętniki i wspomnienia")]
+    Memoir,
+    [Description("Poradniki")]
+    SelfHelp,
+    [Description("Książki historyczne")]
+    History,
+    [Description("Nauka i technologia")]
+    Science,
+    [Description("Filozofia")]
+    Philosophy,
+    [Description("Religia i duchowość")]
+    Religion,
+    [Description("Literatura podróżnicza")]
+    Travel,
+    [Description("Polityka i społeczeństwo")]
+    Politics,
+    [Description("Biznes i zarządzanie")]
+    Business,
+    [Description("Sztuka i design")]
+    Art,
+    [Description("Psychologia")]
+    Psychology,
+    [Description("Książki edukacyjne i akademickie")]
+    Education
 }

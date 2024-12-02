@@ -11,6 +11,8 @@ internal class DtosProfile : Profile
         #region Book
         CreateMap<Book, BookDto>()
             .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name));
+        CreateMap<Book, SearchBookDto>()
+            .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name));
         #endregion
 
         #region Author
