@@ -24,11 +24,6 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
             .Include(b => b.PublishingHouse)
             .FirstOrDefaultAsync(b => b.Id == bookId);
     }
-    public IQueryable<Book> GetAll()
-    {
-        return _dbContext.Books;
-    }
-
     public IQueryable<Book> GetUnseenBooks(Guid userId)
     {
         return _dbContext.Books

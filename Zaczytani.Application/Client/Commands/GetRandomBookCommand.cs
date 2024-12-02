@@ -29,13 +29,16 @@ public record GetRandomBookCommand : IRequest<BookDto>, IUserIdAssignable
                 return _mapper.Map<BookDto>(existingDrawnBook.Book);
             }
 
-            var randomBook = await _bookRepository.GetAll()
+            var unseenBooksQuery = _bookRepository.GetUnseenBooks(request.UserId);
+
+
+            var randomBook = await unseenBooksQuery
                 .OrderBy(_ => Guid.NewGuid())
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (randomBook == null)
             {
-                throw new InvalidOperationException("No books available to draw.");
+                throw new InvalidOperationException("No unseen books available to draw.");
             }
 
             var userDrawnBook = new UserDrawnBook

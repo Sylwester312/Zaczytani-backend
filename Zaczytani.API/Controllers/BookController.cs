@@ -71,7 +71,7 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     }
 
     [HttpPost("Random")]
-    public async Task<IActionResult> GetRandomBook()
+    public async Task<ActionResult<BookDto>> GetRandomBook()
     {
         var command = new GetRandomBookCommand();
         var book = await _mediator.Send(command);
@@ -79,7 +79,7 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     }
 
     [HttpGet("HasDrawn")]
-    public async Task<IActionResult> HasDrawnBookToday()
+    public async Task<ActionResult<BookDto>> HasDrawnBookToday()
     {
         var query = new HasDrawnBookTodayQuery();
         var book = await _mediator.Send(query);

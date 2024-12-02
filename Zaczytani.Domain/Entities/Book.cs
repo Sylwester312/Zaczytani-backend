@@ -47,4 +47,5 @@ public class Book
 
     public virtual PublishingHouse PublishingHouse { get; set; } = null!;
 
-    public virtual List<Author> Authors { get; set; } = [];}
+    public virtual List<Author> Authors { get; set; } = [];
+}
