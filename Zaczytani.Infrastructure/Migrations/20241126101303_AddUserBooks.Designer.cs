@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zaczytani.Infrastructure.Persistance;
 
@@ -11,9 +12,11 @@ using Zaczytani.Infrastructure.Persistance;
 namespace Zaczytani.Infrastructure.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    partial class BookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241126101303_AddUserBooks")]
+    partial class AddUserBooks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,6 +180,9 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Isbn")
                         .IsRequired()
                         .HasMaxLength(13)
@@ -187,10 +193,6 @@ namespace Zaczytani.Infrastructure.Migrations
 
                     b.Property<Guid>("PublishingHouseId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Rating")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
 
                     b.Property<DateOnly>("ReleaseDate")
                         .HasColumnType("date");
@@ -363,7 +365,7 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Zaczytani.Domain.Entities.UserDrawnBook", b =>
+            modelBuilder.Entity("Zaczytani.Domain.Entities.UserBook", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -374,9 +376,6 @@ namespace Zaczytani.Infrastructure.Migrations
 
                     b.Property<DateTime>("DrawnDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -512,7 +511,7 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Zaczytani.Domain.Entities.UserDrawnBook", b =>
+            modelBuilder.Entity("Zaczytani.Domain.Entities.UserBook", b =>
                 {
                     b.HasOne("Zaczytani.Domain.Entities.Book", "Book")
                         .WithMany()
@@ -521,7 +520,7 @@ namespace Zaczytani.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Zaczytani.Domain.Entities.User", "User")
-                        .WithMany("UserBooks")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -529,11 +528,6 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Zaczytani.Domain.Entities.User", b =>
-                {
-                    b.Navigation("UserBooks");
                 });
 #pragma warning restore 612, 618
         }

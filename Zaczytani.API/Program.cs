@@ -14,7 +14,6 @@ builder.AddPresentation();
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
-
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();

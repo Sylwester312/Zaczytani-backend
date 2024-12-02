@@ -31,6 +31,9 @@ public class Book
 
     public List<BookGenre> Genre { get; set; } = [];
 
+    [Range(0.01, 10.00)]
+    public decimal Rating { get; set; }
+
     public string? Series { get; set; }
 
     /// <summary>

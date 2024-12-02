@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zaczytani.Infrastructure.Persistance;
 
@@ -11,9 +12,11 @@ using Zaczytani.Infrastructure.Persistance;
 namespace Zaczytani.Infrastructure.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    partial class BookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241129170354_ChangeBookandUserDrawnBook")]
+    partial class ChangeBookandUserDrawnBook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -363,7 +366,7 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Zaczytani.Domain.Entities.UserDrawnBook", b =>
+            modelBuilder.Entity("Zaczytani.Domain.Entities.UserBook", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -512,7 +515,7 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Zaczytani.Domain.Entities.UserDrawnBook", b =>
+            modelBuilder.Entity("Zaczytani.Domain.Entities.UserBook", b =>
                 {
                     b.HasOne("Zaczytani.Domain.Entities.Book", "Book")
                         .WithMany()
@@ -521,7 +524,7 @@ namespace Zaczytani.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Zaczytani.Domain.Entities.User", "User")
-                        .WithMany("UserBooks")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -529,11 +532,6 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Zaczytani.Domain.Entities.User", b =>
-                {
-                    b.Navigation("UserBooks");
                 });
 #pragma warning restore 612, 618
         }
