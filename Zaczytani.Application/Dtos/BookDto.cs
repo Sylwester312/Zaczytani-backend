@@ -12,6 +12,7 @@ public class BookDto
     public DateOnly ReleaseDate { get; set; }
     public string? ImageUrl { get; set; }
     public List<BookGenre> Genre { get; set; }
+    public decimal Rating { get; set; }
     public string? Series { get; set; }
     public string PublishingHouse { get; set; }
     public IEnumerable<AuthorDto> Authors { get; set; }

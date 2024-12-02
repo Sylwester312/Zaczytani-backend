@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

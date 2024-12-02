@@ -29,9 +29,11 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
         return _dbContext.Books;
     }
 
-    public IQueryable<Book> GetUnseenBooks()
+    public IQueryable<Book> GetUnseenBooks(Guid userId)
     {
-        return _dbContext.Books.Where(b => !b.IsRead);
+        return _dbContext.Books
+            .Where(b => !_dbContext.UserBooks
+                .Any(ub => ub.BookId == b.Id && ub.UserId == userId && ub.IsRead));
     }
     public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }
