@@ -1,4 +1,4 @@
-﻿using System;
+﻿namespace Zaczytani.Application.Dtos;
 
 public class BookShelfDto
 {
