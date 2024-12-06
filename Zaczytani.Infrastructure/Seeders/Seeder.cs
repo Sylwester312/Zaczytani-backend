@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using Zaczytani.Domain.Constants;
 using Zaczytani.Domain.Entities;
@@ -58,6 +59,12 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
                 await _dbContext.SaveChangesAsync();
             }
 
+            if(!_dbContext.BookShelves.Any())
+            {
+                var bookShelves = GetDefaultBookShelves();
+                await _dbContext.BookShelves.AddRangeAsync(bookShelves);
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 
@@ -220,4 +227,36 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
 
         return bookRequests;
     }
+
+    private IEnumerable<BookShelf> GetDefaultBookShelves()
+    {
+        return new List<BookShelf>
+    {
+        new BookShelf
+        {
+            Id = Guid.NewGuid(),
+            Name = "Przeczytane",
+            Description = "Lista przeczytanych książek",
+            UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+            IsDefault = true
+        },
+        new BookShelf
+        {
+            Id = Guid.NewGuid(),
+            Name = "Chce przeczytać",
+            Description = "Lista książek do przeczytania",
+            UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+            IsDefault = true
+        },
+        new BookShelf
+        {
+            Id = Guid.NewGuid(),
+            Name = "Aktualnie czytane",
+            Description = "Lista książek aktualnie czytanych",
+            UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+            IsDefault = true
+        }
+    };
+    }
+
 }

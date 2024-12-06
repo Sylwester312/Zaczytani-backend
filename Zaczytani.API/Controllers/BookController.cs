@@ -30,13 +30,6 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
 
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetBook()
-    {
-        var result = await _mediator.Send(new GetBookShelfQuery());
-        return Ok(result);
-    }
-
     [HttpGet("Search")]
     public async Task<ActionResult<IEnumerable<SearchDto>>> SearchBook([FromQuery] SearchBookQuery command)
     {

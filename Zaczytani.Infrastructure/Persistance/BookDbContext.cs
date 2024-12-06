@@ -11,6 +11,7 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
     internal DbSet<Author> Authors { get; set; } = null!;
     internal DbSet<PublishingHouse> PublishingHouses { get; set; } = null!;
     internal DbSet<UserDrawnBook> UserBooks { get; set; }
+    internal DbSet<BookShelf> BookShelves { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,5 +37,10 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
             .HasForeignKey(ub => ub.BookId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<BookShelf>()
+            .HasOne(bs => bs.User)
+            .WithMany(u => u.BookShelves)
+            .HasForeignKey(bs => bs.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }   

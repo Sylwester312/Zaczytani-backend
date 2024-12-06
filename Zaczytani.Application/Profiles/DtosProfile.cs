@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Zaczytani.Application.Client.Commands;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Domain.Entities;
 
@@ -32,5 +33,12 @@ internal class DtosProfile : Profile
         #region User
         CreateMap<User, UserDto>();
         #endregion
+
+        #region Bookshelf
+        CreateMap<BookShelf, BookShelfDto>();
+        CreateMap<CreateBookShelfCommand, BookShelf>()
+           .ForMember(dest => dest.Id, opt => opt.Ignore())
+           .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(_ => false));
+        #endregion 
     }
 }
