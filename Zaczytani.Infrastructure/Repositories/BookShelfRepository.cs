@@ -21,6 +21,12 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
             .Include(b => b.Books)
             .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
     }
+    public async Task<BookShelf?> GetByIdWithBooksAsync(Guid shelfId, Guid userId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.BookShelves
+            .Include(bs => bs.Books)
+            .FirstOrDefaultAsync(bs => bs.Id == shelfId && bs.UserId == userId, cancellationToken);
+    }
 
     public async Task AddAsync(BookShelf bookshelf, CancellationToken cancellationToken)
     {

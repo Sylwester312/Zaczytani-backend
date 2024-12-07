@@ -5,6 +5,7 @@ using Zaczytani.Domain.Constants;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Enums;
 using Zaczytani.Infrastructure.Persistance;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Zaczytani.Infrastructure.Seeders;
 
@@ -59,7 +60,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
                 await _dbContext.SaveChangesAsync();
             }
 
-            if(!_dbContext.BookShelves.Any())
+            if (!_dbContext.BookShelves.Any())
             {
                 var bookShelves = GetDefaultBookShelves();
                 await _dbContext.BookShelves.AddRangeAsync(bookShelves);
@@ -230,6 +231,8 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
 
     private IEnumerable<BookShelf> GetDefaultBookShelves()
     {
+        var books = GetBooks().ToList();
+
         return new List<BookShelf>
     {
         new BookShelf
@@ -238,7 +241,9 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             Name = "Przeczytane",
             Description = "Lista przeczytanych książek",
             UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
-            IsDefault = true
+            IsDefault = true,
+            Books = new List<Book> { books.FirstOrDefault(b => b.Title.Contains("Harry Potter i Komnata Tajemnic"))! }
+
         },
         new BookShelf
         {
@@ -246,7 +251,9 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             Name = "Chce przeczytać",
             Description = "Lista książek do przeczytania",
             UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
-            IsDefault = true
+            IsDefault = true,
+            Books = new List<Book> { books.FirstOrDefault(b => b.Title.Contains("Harry Potter i Kamień Filozoficzny"))! }
+
         },
         new BookShelf
         {
@@ -258,5 +265,4 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
         }
     };
     }
-
 }
