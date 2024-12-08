@@ -27,7 +27,7 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
     public IQueryable<Book> GetUnseenBooks(Guid userId)
     {
         return _dbContext.Books
-            .Where(b => !_dbContext.UserBooks
+            .Where(b => !_dbContext.UserDrawnBook
                 .Any(ub => ub.BookId == b.Id && ub.UserId == userId && ub.IsRead));
     }
     public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();

@@ -10,8 +10,14 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
     internal DbSet<BookRequest> BookRequests { get; set; } = null!;
     internal DbSet<Author> Authors { get; set; } = null!;
     internal DbSet<PublishingHouse> PublishingHouses { get; set; } = null!;
-    internal DbSet<UserDrawnBook> UserBooks { get; set; }
+    internal DbSet<UserDrawnBook> UserDrawnBook { get; set; } = null!;
     internal DbSet<BookShelf> BookShelves { get; set; } = null!;
+    internal DbSet<Challenge> Challenges { get; set; } = null!;
+    internal DbSet<ChallengeProgress> ChallengeProgresses { get; set; } = null!;
+    internal DbSet<Comment> Comments { get; set; } = null!;
+    internal DbSet<Review> Reviews { get; set; } = null!;
+    internal DbSet<Report> Reports { get; set; } = null!;
+    internal DbSet<Follower> Followers { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,13 +27,9 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
             .Property(b => b.Status)
             .HasConversion<int>();
 
-        modelBuilder.Entity<Book>()
-                .Property(b => b.Rating)
-                .HasPrecision(5, 2);
-
         modelBuilder.Entity<UserDrawnBook>()
             .HasOne(ub => ub.User)
-            .WithMany(u => u.UserBooks)
+            .WithMany(u => u.UserDrawnBooks)
             .HasForeignKey(ub => ub.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
@@ -42,5 +44,37 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
             .WithMany(u => u.BookShelves)
             .HasForeignKey(bs => bs.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Challenge>()
+            .HasMany(c => c.UserProgress)
+            .WithOne(up => up.Challenge)
+            .HasForeignKey(u => u.ChallengeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.Review)
+            .WithMany(r => r.Comments)
+            .HasForeignKey(c => c.ReviewId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Report>()
+            .HasOne(r => r.Review)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Follower>(entity =>
+        {
+            entity.HasKey(f => new { f.FollowerId, f.FollowedId });
+
+            entity.HasOne(f => f.FollowerUser)
+                  .WithMany(u => u.Following)
+                  .HasForeignKey(f => f.FollowerId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(f => f.FollowedUser)
+                  .WithMany(u => u.Followers)
+                  .HasForeignKey(f => f.FollowedId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 }   

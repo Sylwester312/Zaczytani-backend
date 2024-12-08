@@ -11,7 +11,7 @@ public class BookRequest
 
     [Required]
     [MaxLength(150)]
-    public string Title { get; set; } = string.Empty;
+    public string Title { get; set; } = null!;
 
     [MinLength(10)]
     [MaxLength(13)]

@@ -11,15 +11,15 @@ public class Book
 
     [Required]
     [MaxLength(150)]
-    public string Title { get; set; } = string.Empty;
+    public string Title { get; set; } = null!;
 
     [MinLength(10)]
     [MaxLength(13)]
-    public string Isbn { get; set; } = string.Empty;
+    public string Isbn { get; set; } = null!;
 
     [Required]
     [MaxLength(1000)]
-    public string Description {  get; set; } = string.Empty;
+    public string Description {  get; set; } = null!;
 
     [Required]
     public int PageNumber { get; set; }
@@ -30,9 +30,6 @@ public class Book
     public string? Image { get; set; }
 
     public List<BookGenre> Genre { get; set; } = [];
-
-    [Range(0.01, 10.00)]
-    public decimal Rating { get; set; }
 
     public string? Series { get; set; }
 
@@ -48,4 +45,6 @@ public class Book
     public virtual PublishingHouse PublishingHouse { get; set; } = null!;
 
     public virtual List<Author> Authors { get; set; } = [];
+
+    public virtual List<Review> Reviews { get; set; } = [];
 }
