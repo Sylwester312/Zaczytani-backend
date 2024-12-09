@@ -33,6 +33,15 @@ public class BookRequestController(IMediator mediator) : ControllerBase
         return Ok();
     }
 
+    [HttpPatch("Reject/{id}")]
+    public async Task<IActionResult> RejectBookRequest([FromRoute] Guid id)
+    {
+        var command = new RejectBookRequestCommand();
+        command.SetId(id);
+        await _mediator.Send(command);
+        return Ok();
+    }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserBookRequestDto>>> GetUsersBookRequests()
     {
