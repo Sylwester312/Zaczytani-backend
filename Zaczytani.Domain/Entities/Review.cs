@@ -6,7 +6,7 @@ namespace Zaczytani.Domain.Entities;
 public class Review
 {
     [Key]
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     [MaxLength(300)]
     public string? Content { get; set; }
