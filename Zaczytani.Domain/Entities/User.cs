@@ -16,8 +16,14 @@ public class User : IdentityUser<Guid>
 
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public ICollection<UserDrawnBook> UserBooks { get; set; } = new List<UserDrawnBook>();
-    public ICollection<BookShelf> BookShelves { get; set; } = new List<BookShelf>();
+    public ICollection<UserDrawnBook> UserDrawnBooks { get; set; } = [];
+    public ICollection<BookShelf> BookShelves { get; set; } = [];
+    public ICollection<Challenge> Challenges { get; set; } = [];
+    public ICollection<ChallengeProgress> ChallengeProgresses { get; set; } = [];
+    public ICollection<Review> Reviews { get; set; } = [];
+    public ICollection<Comment> Comments { get; set; } = [];
+    public ICollection<Follower> Followers { get; set; } = [];
+    public ICollection<Follower> Following { get; set; } = [];
 }
 
 public class UserRole : IdentityRole<Guid>

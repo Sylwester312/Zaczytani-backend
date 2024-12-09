@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace Zaczytani.Domain.Entities;
+
 public class BookShelf
 {
     [Key]
@@ -10,7 +10,7 @@ public class BookShelf
 
     [Required]
     [MaxLength(100)]
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = null!;
 
     [MaxLength(500)]
     public string? Description { get; set; }
@@ -23,5 +23,5 @@ public class BookShelf
 
     public virtual User User { get; set; } = null!;
 
-    public virtual ICollection<Book> Books { get; set; } = new List<Book>();
+    public virtual ICollection<Book> Books { get; set; } = [];
 }

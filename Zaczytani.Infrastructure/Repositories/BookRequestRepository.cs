@@ -20,7 +20,17 @@ internal class BookRequestRepository(BookDbContext dbContext) : IBookRequestRepo
         .Where(b => b.UserId == userId)
         .OrderBy(b => b.CreatedDate);
 
-    public async Task<BookRequest?> GetByIdAsync(Guid id) => await _dbContext.BookRequests.FirstOrDefaultAsync(b => b.Id == id);
+    public async Task<BookRequest?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) 
+        => await _dbContext.BookRequests.FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
+
+    public async Task DeleteBookRequest(Guid id, CancellationToken cancellationToken)
+    {
+        var bookRequest = await GetByIdAsync(id, cancellationToken);
+        if(bookRequest != null)
+        {
+            _dbContext.BookRequests.Remove(bookRequest);
+        }
+    }
 
     public Task SaveChangesAsync(CancellationToken cancellationToken = default) => _dbContext.SaveChangesAsync(cancellationToken);
 }
