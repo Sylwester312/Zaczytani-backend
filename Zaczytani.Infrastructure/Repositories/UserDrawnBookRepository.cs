@@ -11,6 +11,7 @@ internal class UserDrawnBookRepository(BookDbContext dbContext) : IUserDrawnBook
     {
         return await _dbContext.UserDrawnBook
             .Include(udb => udb.Book)
+            .ThenInclude(b => b.Authors)
             .FirstOrDefaultAsync(udb => udb.UserId == userId && udb.DrawnDate == date, cancellationToken);
     }
 

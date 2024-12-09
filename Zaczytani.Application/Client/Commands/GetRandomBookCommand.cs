@@ -34,6 +34,7 @@ public record GetRandomBookCommand : IRequest<BookDto>, IUserIdAssignable
 
             var randomBook = await unseenBooksQuery
                 .OrderBy(_ => Guid.NewGuid())
+                .Include(b => b.Authors)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (randomBook == null)

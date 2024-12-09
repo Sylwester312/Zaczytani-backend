@@ -20,7 +20,7 @@ public class BookshelfController : ControllerBase
     public async Task<ActionResult> CreateShelf([FromBody] CreateBookShelfCommand command)
     {
         var id = await _mediator.Send(command);
-        return CreatedAtAction(nameof(GetShelf), null, id);
+        return CreatedAtAction(nameof(GetShelf), new { id }, new { Id = id });
     }
 
     [HttpPut("Update")]
