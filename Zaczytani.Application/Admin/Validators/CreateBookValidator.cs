@@ -35,13 +35,11 @@ public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
             .Must(authors => authors.Count > 0).WithMessage("At least one author is required.")
             .ForEach(author =>
             {
-                author.NotNull().WithMessage("Author cannot be null.");
-                author.SetValidator(new AuthorDtoValidator());
+                author.NotEmpty().WithMessage("Author cannot be null.");
             });
 
         RuleFor(x => x.PublishingHouse)
-            .NotNull().WithMessage("Publishing house is required.")
-            .SetValidator(new PublishingHouseDtoValidator());
+            .NotEmpty().WithMessage("Publishing house is required.");
 
         RuleFor(x => x.Genre)
             .NotNull().WithMessage("Genre list cannot be null.")

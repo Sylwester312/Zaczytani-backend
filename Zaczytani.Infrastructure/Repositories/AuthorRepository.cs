@@ -16,5 +16,10 @@ internal class AuthorRepository(BookDbContext dbContext) : IAuthorRepository
         return await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
     }
 
+    public async Task<Author?> GetByNameAsync(string name)
+    {
+        return await _dbContext.Authors.Where(a => a.Name == name).FirstOrDefaultAsync();
+    }
+
     public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }

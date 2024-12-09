@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Enums;
@@ -15,8 +14,8 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
     public int PageNumber { get; set; }
     public DateOnly ReleaseDate { get; set; }
     public string? FileName { get; set; } = string.Empty;
-    public List<AuthorDto> Authors { get; set; } = [];
-    public PublishingHouseDto PublishingHouse { get; set; } = new();
+    public List<string> Authors { get; set; } = [];
+    public string PublishingHouse { get; set; } = string.Empty;
     public List<BookGenre> Genre { get; set; } = [];
     public string? Series { get; set; } = string.Empty;
 
@@ -47,9 +46,9 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
                 ReleaseDate = request.ReleaseDate,
             };
     
-            foreach (var authorDto in request.Authors)
+            foreach (var author in request.Authors)
             {
-                var existingAuthor = await _authorRepository.GetByIdAsync(authorDto.Id);
+                var existingAuthor = await _authorRepository.GetByNameAsync(author);
 
                 if (existingAuthor != null)
                 {
@@ -59,15 +58,14 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
                 {
                     var newAuthor = new Author
                     {
-                        Id = authorDto.Id == Guid.Empty ? Guid.NewGuid() : authorDto.Id,
-                        Name = authorDto.Name
+                        Name = author
                     };
                     book.Authors.Add(newAuthor);
                 }
             }
 
           
-            var existingPublishingHouse = await _publishingHouseRepository.GetByIdAsync(request.PublishingHouse.Id);
+            var existingPublishingHouse = await _publishingHouseRepository.GetByNameAsync(request.PublishingHouse);
 
             if (existingPublishingHouse != null)
             {
@@ -77,7 +75,7 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
             {
                 var newPublishingHouse = new PublishingHouse
                 {
-                    Name = request.PublishingHouse.Name
+                    Name = request.PublishingHouse
                 };
                 book.PublishingHouse = newPublishingHouse;
             }
