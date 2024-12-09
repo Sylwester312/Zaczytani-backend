@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Exceptions;
 using Zaczytani.Domain.Enums;
 using Zaczytani.Domain.Repositories;
@@ -16,8 +15,8 @@ public class AcceptBookRequestCommand : IRequest
     public int PageNumber { get; set; }
     public DateOnly ReleaseDate { get; set; }
     public string? FileName { get; set; } = string.Empty;
-    public List<AuthorDto> Authors { get; set; } = [];
-    public PublishingHouseDto PublishingHouse { get; set; } = new();
+    public List<string> Authors { get; set; } = [];
+    public string PublishingHouse { get; set; } = string.Empty;
     public List<BookGenre> Genre { get; set; } = [];
     public string? Series { get; set; } = string.Empty;
 
