@@ -40,6 +40,9 @@ public class CreateReviewCommand : IRequest<Guid>, IUserIdAssignable
             var _ = await _bookRepository.GetByIdAsync(request.BookId)
                 ?? throw new NotFoundException($"Book with ID {request.BookId} was not found.");
 
+            review.BookId = request.BookId;
+            review.UserId = request.UserId;
+
             await _reviewRepository.AddAsync(review);
             await _reviewRepository.SaveChangesAsync();
 
