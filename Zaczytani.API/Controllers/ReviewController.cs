@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zaczytani.Application.Client.Commands;
+using Zaczytani.Application.Client.Queries;
+using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
 
 namespace Zaczytani.API.Controllers;
@@ -22,6 +24,14 @@ public class ReviewController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(GetReviewDetails), new { id }, new { id });
     }
 
+    [HttpGet("CurrentlyReading")]
+    public async Task<ActionResult<IEnumerable<CurrentlyReadingBookDto>>> GetCurrentlyReadingBooks()
+    {
+        var query = new GetCurrentlyReadingBooksQuery();
+        var books = await _mediator.Send(query);
+        return Ok(books);
+    }
+
     //Temporary solutions
     [HttpGet("{id:guid}")]
     public async Task<ActionResult> GetReviewDetails(Guid id)
@@ -29,3 +39,4 @@ public class ReviewController(IMediator mediator) : ControllerBase
         return Ok();
     }
 }
+

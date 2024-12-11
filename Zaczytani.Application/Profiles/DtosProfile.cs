@@ -37,8 +37,16 @@ internal class DtosProfile : Profile
         #region Bookshelf
         CreateMap<BookShelf, BookShelfDto>();
         CreateMap<CreateBookShelfCommand, BookShelf>()
-           .ForMember(dest => dest.Id, opt => opt.Ignore())
-           .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(_ => false));
-        #endregion 
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(_ => false));
+        #endregion
+
+        #region ReadingBook
+        CreateMap<Review, CurrentlyReadingBookDto>()
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Book.Title))
+            .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Book.Authors.FirstOrDefault().Name))
+            .ForMember(dest => dest.Progress, opt => opt.MapFrom(src => src.Progress))
+            .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Book.Image));
+        #endregion
     }
 }
