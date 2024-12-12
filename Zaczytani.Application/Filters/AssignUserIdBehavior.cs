@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Zaczytani.Application.Filters;
 
@@ -10,8 +11,12 @@ internal class AssignUserIdBehavior<TRequest, TResponse>(IHttpContextAccessor ht
     {
         if (request is IUserIdAssignable userRequest)
         {
-            if (_httpContextAccessor.HttpContext?.Items["UserId"] is Guid userId)
+            var user = _httpContextAccessor?.HttpContext?.User
+                ?? throw new InvalidOperationException("User context is not present");
+
+            if (user.Identity != null && user.Identity.IsAuthenticated)
             {
+                var userId = Guid.Parse(user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
                 userRequest.SetUserId(userId);
             }
         }
