@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Zaczytani.Application.Configuration;
 using Zaczytani.Application.Http;
 
 namespace Zaczytani.Application.Extenstions;
@@ -22,6 +23,8 @@ public static class ServiceCollectionExtension
             .AddFluentValidationAutoValidation();
 
         services.Configure<HttpClientConfig>(configuration.GetSection("BookHttpClient"));
+        services.Configure<UserManagementSettings>(configuration.GetSection("UserManagement"));
+
         services.AddHttpClient<BookHttpClient>((sp, client) =>
         {
             var config = sp.GetRequiredService<IOptions<HttpClientConfig>>().Value;

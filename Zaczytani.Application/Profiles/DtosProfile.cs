@@ -39,6 +39,11 @@ internal class DtosProfile : Profile
         CreateMap<CreateBookShelfCommand, BookShelf>()
            .ForMember(dest => dest.Id, opt => opt.Ignore())
            .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(_ => false));
-        #endregion 
+        #endregion
+
+        #region Report
+        CreateMap<Report, ReportDto>()
+            .ForMember(desc => desc.Review, opt => opt.MapFrom(src => src.Review.Content));
+        #endregion
     }
 }

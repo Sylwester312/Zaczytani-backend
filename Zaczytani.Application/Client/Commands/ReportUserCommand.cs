@@ -14,11 +14,13 @@ public class ReportUserCommand : IRequest, IUserIdAssignable
 
     public ReportCategory Category { get; set; }
 
-    public Guid ReviewId { get; set; }
+    private Guid ReviewId { get; set; }
 
     private Guid UserId { get; set; }
-    
+
     public void SetUserId(Guid userId) => UserId = userId;
+
+    public void SetReviewId(Guid reviewId) => ReviewId = reviewId;
 
     private class ReportUserCommandHandler(IReportRepository reportRepository, IReviewRepository reviewRepository, IMapper mapper) : IRequestHandler<ReportUserCommand>
     {
@@ -32,6 +34,7 @@ public class ReportUserCommand : IRequest, IUserIdAssignable
 
             var report = _mapper.Map<Report>(request);
             report.UserId = request.UserId;
+            report.ReviewId = request.ReviewId;
 
             await _reportRepository.AddAsync(report, cancellationToken);
             await _reportRepository.SaveChangesAsync();

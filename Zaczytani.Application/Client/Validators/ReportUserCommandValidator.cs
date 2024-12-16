@@ -13,9 +13,5 @@ public class ReportUserCommandValidator : AbstractValidator<ReportUserCommand>
 
         RuleFor(x => x.Category)
             .IsInEnum().WithMessage("Invalid category selected.");
-
-        RuleFor(x => x.ReviewId)
-            .NotEmpty().WithMessage("ReviewId cannot be empty.")
-            .Must(id => id != Guid.Empty).WithMessage("ReviewId must be a valid GUID.");
     }
 }
