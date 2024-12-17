@@ -48,9 +48,6 @@ internal class DtosProfile : Profile
         CreateMap<Report, ReportDto>()
             .ForMember(desc => desc.Review, opt => opt.MapFrom(src => src.Review.Content));
         #endregion
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(_ => false));
-        #endregion
 
         #region ReadingBook
         CreateMap<Review, CurrentlyReadingBookDto>()
