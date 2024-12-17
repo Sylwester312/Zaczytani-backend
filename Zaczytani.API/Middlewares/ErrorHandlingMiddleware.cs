@@ -29,6 +29,10 @@ public class ErrorHandlingMiddleware(RequestDelegate Next)
                 statusCode = HttpStatusCode.NotFound;
                 message = notFoundException.Message;
                 break;
+            case BadRequestException badRequestException:
+                statusCode = HttpStatusCode.BadRequest;
+                message = badRequestException.Message;
+                break;
             default:
                 statusCode = HttpStatusCode.InternalServerError;
                 message = "An unexpected error occurred.";

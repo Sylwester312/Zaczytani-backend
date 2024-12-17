@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Zaczytani.Application.Dtos;
-using Zaczytani.Application.Exceptions;
+using Zaczytani.Domain.Exceptions;
 using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Shared.Queries;
