@@ -17,12 +17,12 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
                                     || b.Authors.Any(a => a.Name.Contains(searchPhrase)))
         .OrderBy(b => b.Title);
 
-    public async Task<Book?> GetByIdAsync(Guid bookId)
+    public async Task<Book?> GetByIdAsync(Guid bookId, CancellationToken cancellationToken)
     {
         return await _dbContext.Books
             .Include(b => b.Authors)
             .Include(b => b.PublishingHouse)
-            .FirstOrDefaultAsync(b => b.Id == bookId);
+            .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
     }
     public IQueryable<Book> GetUnseenBooks(Guid userId)
     {
@@ -30,5 +30,5 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
             .Where(b => !_dbContext.UserDrawnBook
                 .Any(ub => ub.BookId == b.Id && ub.UserId == userId && ub.IsRead));
     }
-    public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
+    public Task SaveChangesAsync(CancellationToken cancellationToken) => _dbContext.SaveChangesAsync(cancellationToken);
 }

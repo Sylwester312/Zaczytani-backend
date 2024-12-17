@@ -37,7 +37,7 @@ public class CreateReviewCommand : IRequest<Guid>, IUserIdAssignable
         {
             var review = _mapper.Map<Review>(request);
 
-            var _ = await _bookRepository.GetByIdAsync(request.BookId)
+            _ = await _bookRepository.GetByIdAsync(request.BookId, cancellationToken)
                 ?? throw new NotFoundException($"Book with ID {request.BookId} was not found.");
 
             review.BookId = request.BookId;
