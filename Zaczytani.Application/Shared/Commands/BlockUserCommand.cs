@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Zaczytani.Application.Configuration;
-using Zaczytani.Application.Exceptions;
 using Zaczytani.Domain.Entities;
+using Zaczytani.Domain.Exceptions;
 namespace Zaczytani.Application.Shared.Commands;
 
 public record BlockUserCommand(Guid UserId) : IRequest

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zaczytani.Application.Client.Commands;
+using Zaczytani.Application.Client.Queries;
+using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
 
 namespace Zaczytani.API.Controllers;
@@ -20,6 +22,15 @@ public class ReviewController(IMediator mediator) : ControllerBase
         command.SetBookId(bookId);
         var id = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetReviewDetails), new { id }, new { id });
+    }
+
+    [HttpGet("{bookId}/Progress")]
+    public async Task<ActionResult<ReadingBookDto>> GetReadingBook(Guid bookId)
+    {
+        var query = new GetReadingBookDetailsQuery(bookId);
+        var result = await _mediator.Send(query);
+
+        return Ok(result);
     }
 
     //Temporary solutions

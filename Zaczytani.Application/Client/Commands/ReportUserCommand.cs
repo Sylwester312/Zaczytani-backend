@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using Zaczytani.Application.Exceptions;
 using Zaczytani.Application.Filters;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Enums;
+using Zaczytani.Domain.Exceptions;
 using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Client.Commands;
