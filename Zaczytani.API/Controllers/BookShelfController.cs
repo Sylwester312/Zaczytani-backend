@@ -16,7 +16,7 @@ public class BookShelfController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
-    [HttpPost("{shelfId}/{bookId}/attach")]
+    [HttpPost("{shelfId}/{bookId}/Attach")]
     public async Task<ActionResult> AttachBook([FromRoute] Guid shelfId, Guid bookId)
     {
         var command = new AttachBookCommand(shelfId, bookId);
@@ -24,7 +24,7 @@ public class BookShelfController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{shelfId}/{bookId}/detach")]
+    [HttpDelete("{shelfId}/{bookId}/Detach")]
     public async Task<ActionResult> DetachBook([FromRoute] Guid shelfId, Guid bookId)
     {
         var command = new DetachBookCommand(shelfId, bookId);

@@ -26,12 +26,13 @@ public class CreateReviewCommand : IRequest<Guid>, IUserIdAssignable
     private Guid UserId { get; set; }
 
     public void SetUserId(Guid userId) => UserId = userId;
-    
-    private class CreateReviewCommandHandler(IBookRepository bookRepository, IReviewRepository reviewRepository, IMapper mapper) : IRequestHandler<CreateReviewCommand, Guid>
+
+    private class CreateReviewCommandHandler(IBookRepository bookRepository, IReviewRepository reviewRepository, IMapper mapper, IMediator mediator) : IRequestHandler<CreateReviewCommand, Guid>
     {
         private readonly IBookRepository _bookRepository = bookRepository;
         private readonly IReviewRepository _reviewRepository = reviewRepository;
         private readonly IMapper _mapper = mapper;
+        private readonly IMediator _mediator = mediator;
 
         public async Task<Guid> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
         {
@@ -48,6 +49,12 @@ public class CreateReviewCommand : IRequest<Guid>, IUserIdAssignable
 
             await _reviewRepository.AddAsync(review);
             await _reviewRepository.SaveChangesAsync();
+
+            if (request.IsFinal || request.Progress == book.PageNumber)
+            {
+                var command = new ReadBookCommand(request.BookId);
+                await _mediator.Send(command, cancellationToken);
+            }
 
             return review.Id;
         }

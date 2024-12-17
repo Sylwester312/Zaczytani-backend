@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.Domain.Entities;
 
@@ -15,11 +16,13 @@ public class BookShelf
     [MaxLength(500)]
     public string? Description { get; set; }
 
-    public bool IsDefault { get; set; }
+    public bool IsDefault { get; set; } = false;
 
     [Required]
     [ForeignKey(nameof(User))]
     public Guid UserId { get; set; }
+
+    public BookShelfType Type { get; set; } = BookShelfType.Other;
 
     public virtual User User { get; set; } = null!;
 

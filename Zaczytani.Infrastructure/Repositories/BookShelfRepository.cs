@@ -2,11 +2,19 @@
 using Zaczytani.Domain.Repositories;
 using Zaczytani.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
+using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.Infrastructure.Repositories;
 internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfRepository
 {
     private readonly BookDbContext _dbContext = dbContext;
+
+    public async Task<BookShelf?> GetBookShelfByTypeAsync(BookShelfType type, Guid userId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.BookShelves
+            .Where(b => b.Type == type && b.UserId == userId)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 
     public async Task<IEnumerable<BookShelf>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
