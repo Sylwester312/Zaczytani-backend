@@ -4,7 +4,7 @@ public class CurrentlyReadingBookDto
 {
     public Guid BookId { get; set; }
     public string Title { get; set; } = string.Empty;
-    public string Author { get; set; } = string.Empty;
+    public IEnumerable<AuthorDto> Authors { get; set; }
     public int Progress { get; set; }
-    public string Image { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
 }

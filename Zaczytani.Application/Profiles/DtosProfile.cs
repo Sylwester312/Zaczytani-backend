@@ -51,10 +51,11 @@ internal class DtosProfile : Profile
 
         #region ReadingBook
         CreateMap<Review, CurrentlyReadingBookDto>()
+            .ForMember(dest => dest.BookId, opt => opt.MapFrom(src => src.BookId))
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Book.Title))
-            .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Book.Authors.FirstOrDefault().Name))
+            .ForMember(dest => dest.Authors, opt => opt.MapFrom(src => src.Book.Authors))
             .ForMember(dest => dest.Progress, opt => opt.MapFrom(src => src.Progress))
-            .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Book.Image));
+            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.Image));
         #endregion
     }
 }

@@ -15,6 +15,7 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
         return await _dbContext.Reviews
             .Where(r => r.UserId == userId && !r.IsFinal)
             .Include(r => r.Book)
+            .ThenInclude(b => b.Authors)
             .ToListAsync(cancellationToken);
     }
 
