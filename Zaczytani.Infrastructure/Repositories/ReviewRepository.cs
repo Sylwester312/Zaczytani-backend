@@ -18,5 +18,14 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<Review?> GetLatestReviewByBookIdAsync(Guid bookId, Guid userId, CancellationToken cancellationToken)
+        => await _dbContext.Reviews
+        .Include(r => r.Book)
+        .Where(r => r.BookId == bookId && r.UserId == userId)
+        .OrderByDescending(r => r.CreatedDate)
+        .FirstOrDefaultAsync(cancellationToken);
+
+    public async Task<Review?> GetReviewByIdAsync(Guid id) => await _dbContext.Reviews.FirstOrDefaultAsync(x => x.Id == id);
+
     public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
 }

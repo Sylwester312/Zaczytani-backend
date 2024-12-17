@@ -14,5 +14,7 @@ internal class CommandsProfile : Profile
         CreateMap<AcceptBookRequestCommand, CreateBookCommand>();
 
         CreateMap<CreateReviewCommand, Review>();
+
+        CreateMap<ReportUserCommand, Report>();
     }
 }

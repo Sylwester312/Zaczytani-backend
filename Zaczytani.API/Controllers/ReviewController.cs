@@ -24,6 +24,15 @@ public class ReviewController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(GetReviewDetails), new { id }, new { id });
     }
 
+    [HttpGet("{bookId}/Progress")]
+    public async Task<ActionResult<ReadingBookDto>> GetReadingBook(Guid bookId)
+    {
+        var query = new GetReadingBookDetailsQuery(bookId);
+        var result = await _mediator.Send(query);
+
+        return Ok(result);
+    }
+
     [HttpGet("CurrentlyReading")]
     public async Task<ActionResult<IEnumerable<CurrentlyReadingBookDto>>> GetCurrentlyReadingBooks()
     {

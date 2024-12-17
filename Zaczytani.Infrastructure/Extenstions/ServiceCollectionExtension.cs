@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -18,9 +19,15 @@ public static class ServiceCollectionExtension
         var connectionString = configuration.GetConnectionString("ZaczytaniDb");
         services.AddDbContext<BookDbContext>(options => options.UseSqlServer(connectionString).LogTo(Console.WriteLine, LogLevel.Information));
 
-        services.AddIdentityApiEndpoints<User>()
+        services.AddIdentityApiEndpoints<User>(options =>
+        {
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+        })
             .AddRoles<UserRole>()
-            .AddEntityFrameworkStores<BookDbContext>();
+            .AddEntityFrameworkStores<BookDbContext>()
+            .AddDefaultTokenProviders();
 
         services.Configure<FileStorageOptions>(configuration.GetSection("FileStorage"));
         services.AddSingleton<IFileStorageRepository, FileStorageRepository>();
@@ -32,6 +39,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IUserDrawnBookRepository, UserDrawnBookRepository>();
         services.AddScoped<IBookShelfRepository, BookShelfRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IReportRepository, ReportRepository>();
         services.AddScoped<ISeeder, Seeder>();
     }
 }

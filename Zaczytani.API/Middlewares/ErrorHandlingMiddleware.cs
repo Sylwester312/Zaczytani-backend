@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Zaczytani.Application.Exceptions;
+using Zaczytani.Domain.Exceptions;
 
 namespace Zaczytani.API.Middlewares;
 
@@ -28,6 +28,10 @@ public class ErrorHandlingMiddleware(RequestDelegate Next)
             case NotFoundException notFoundException:
                 statusCode = HttpStatusCode.NotFound;
                 message = notFoundException.Message;
+                break;
+            case BadRequestException badRequestException:
+                statusCode = HttpStatusCode.BadRequest;
+                message = badRequestException.Message;
                 break;
             default:
                 statusCode = HttpStatusCode.InternalServerError;

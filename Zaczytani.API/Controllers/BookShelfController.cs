@@ -6,15 +6,31 @@ using Zaczytani.Application.Client.Queries;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
 
+namespace Zaczytani.API.Controllers;
+
 [ApiController]
 [Authorize]
 [SetUserId]
 [Route("api/[controller]")]
-public class BookshelfController : ControllerBase
+public class BookShelfController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly IMediator _mediator = mediator;
 
-    public BookshelfController(IMediator mediator) => _mediator = mediator;
+    [HttpPost("{shelfId}/{bookId}/attach")]
+    public async Task<ActionResult> AttachBook([FromRoute] Guid shelfId, Guid bookId)
+    {
+        var command = new AttachBookCommand(shelfId, bookId);
+        await _mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpDelete("{shelfId}/{bookId}/detach")]
+    public async Task<ActionResult> DetachBook([FromRoute] Guid shelfId, Guid bookId)
+    {
+        var command = new DetachBookCommand(shelfId, bookId);
+        await _mediator.Send(command);
+        return NoContent();
+    }
 
     [HttpPost("Create")]
     public async Task<ActionResult> CreateShelf([FromBody] CreateBookShelfCommand command)

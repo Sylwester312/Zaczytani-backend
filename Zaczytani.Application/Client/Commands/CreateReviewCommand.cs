@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using Zaczytani.Application.Exceptions;
 using Zaczytani.Application.Filters;
 using Zaczytani.Domain.Entities;
+using Zaczytani.Domain.Exceptions;
 using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Client.Commands;
@@ -35,10 +35,16 @@ public class CreateReviewCommand : IRequest<Guid>, IUserIdAssignable
 
         public async Task<Guid> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
         {
+            var book = await _bookRepository.GetByIdAsync(request.BookId, cancellationToken)
+                ?? throw new NotFoundException($"Book with ID {request.BookId} was not found.");
+
+            if (request.Progress > book.PageNumber)
+                throw new BadRequestException("Progress cannot be greater than book page number");
+
             var review = _mapper.Map<Review>(request);
 
-            var _ = await _bookRepository.GetByIdAsync(request.BookId)
-                ?? throw new NotFoundException($"Book with ID {request.BookId} was not found.");
+            review.BookId = request.BookId;
+            review.UserId = request.UserId;
 
             await _reviewRepository.AddAsync(review);
             await _reviewRepository.SaveChangesAsync();

@@ -12,8 +12,11 @@ internal class DtosProfile : Profile
         #region Book
         CreateMap<Book, BookDto>()
             .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name));
+
         CreateMap<Book, SearchBookDto>()
             .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name));
+
+        CreateMap<Book, ReadingBookDto>();
         #endregion
 
         #region Author
@@ -37,6 +40,14 @@ internal class DtosProfile : Profile
         #region Bookshelf
         CreateMap<BookShelf, BookShelfDto>();
         CreateMap<CreateBookShelfCommand, BookShelf>()
+           .ForMember(dest => dest.Id, opt => opt.Ignore())
+           .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(_ => false));
+        #endregion
+
+        #region Report
+        CreateMap<Report, ReportDto>()
+            .ForMember(desc => desc.Review, opt => opt.MapFrom(src => src.Review.Content));
+        #endregion
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(_ => false));
         #endregion
