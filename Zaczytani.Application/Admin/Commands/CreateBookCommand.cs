@@ -81,7 +81,7 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
             }
 
             await _bookRepository.AddAsync(book);
-            await _bookRepository.SaveChangesAsync();
+            await _bookRepository.SaveChangesAsync(cancellationToken);
 
             return book.Id;
         }
