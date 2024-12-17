@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Zaczytani.Application.Exceptions;
+using Zaczytani.Domain.Exceptions;
 
 namespace Zaczytani.API.Middlewares;
 

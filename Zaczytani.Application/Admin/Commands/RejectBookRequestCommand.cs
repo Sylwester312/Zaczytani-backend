@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using Zaczytani.Application.Exceptions;
 using Zaczytani.Domain.Enums;
+using Zaczytani.Domain.Exceptions;
 using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Admin.Commands;
@@ -18,7 +18,7 @@ public class RejectBookRequestCommand : IRequest
 
         public async Task Handle(RejectBookRequestCommand request, CancellationToken cancellationToken)
         {
-            var bookRequest = await _bookRequestRepository.GetByIdAsync(request.Id)
+            var bookRequest = await _bookRequestRepository.GetByIdAsync(request.Id, cancellationToken)
                 ?? throw new NotFoundException($"Book Request with ID {request.Id} was not found.");
 
             bookRequest.Status = BookRequestStatus.Rejected;
