@@ -14,10 +14,11 @@ public record HasDrawnBookTodayQuery : IRequest<BookDto?>, IUserIdAssignable
         UserId = userId;
     }
 
-    private class Handler(IUserDrawnBookRepository userDrawnBookRepository, IMapper mapper) : IRequestHandler<HasDrawnBookTodayQuery, BookDto?>
+    private class Handler(IUserDrawnBookRepository userDrawnBookRepository, IFileStorageRepository fileStorageRepository, IMapper mapper) : IRequestHandler<HasDrawnBookTodayQuery, BookDto?>
     {
         private readonly IUserDrawnBookRepository _userDrawnBookRepository = userDrawnBookRepository;
         private readonly IMapper _mapper = mapper;
+        private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
 
         public async Task<BookDto?> Handle(HasDrawnBookTodayQuery request, CancellationToken cancellationToken)
         {
@@ -28,7 +29,10 @@ public record HasDrawnBookTodayQuery : IRequest<BookDto?>, IUserIdAssignable
                 return null;
             }
 
-            return _mapper.Map<BookDto>(drawnBook.Book);
+            var bookDto = _mapper.Map<BookDto>(drawnBook.Book);
+            bookDto.ImageUrl = _fileStorageRepository.GetFileUrl(drawnBook.Book.Image);
+
+            return bookDto;
         }
     }
 }

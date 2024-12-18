@@ -9,7 +9,6 @@ namespace Zaczytani.Application.Client.Commands;
 public class CreateBookShelfCommand : IRequest<Guid>, IUserIdAssignable
 {
     public string Name { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
 
     private Guid UserId { get; set; }
 

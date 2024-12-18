@@ -28,15 +28,14 @@ public record UpdateBookShelfCommand(Guid ShelfId, string Name, string Descripti
 
             if (bookshelf.IsDefault)
             {
-                if (bookshelf.Name != request.Name || bookshelf.Description != request.Description)
+                if (bookshelf.Name != request.Name)
                 {
-                    throw new InvalidOperationException("Default bookshelves cannot have their name or description changed.");
+                    throw new InvalidOperationException("Default bookshelves cannot have their name changed.");
                 }
             }
             else
             {
                 bookshelf.Name = request.Name;
-                bookshelf.Description = request.Description;
             }
 
             await _repository.UpdateAsync(bookshelf, cancellationToken);
