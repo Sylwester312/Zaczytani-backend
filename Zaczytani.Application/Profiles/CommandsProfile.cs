@@ -16,5 +16,7 @@ internal class CommandsProfile : Profile
         CreateMap<CreateReviewCommand, Review>();
 
         CreateMap<ReportUserCommand, Report>();
+
+        CreateMap<CreateCommentCommand, Comment>();
     }
 }

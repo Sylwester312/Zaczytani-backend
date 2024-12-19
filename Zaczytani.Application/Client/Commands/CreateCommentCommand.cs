@@ -1,0 +1,36 @@
+﻿using AutoMapper;
+using MediatR;
+using Zaczytani.Application.Filters;
+using Zaczytani.Domain.Entities;
+using Zaczytani.Domain.Exceptions;
+using Zaczytani.Domain.Repositories;
+
+namespace Zaczytani.Application.Client.Commands;
+
+public record CreateCommentCommand(string Content) : IRequest, IUserIdAssignable
+{
+    private Guid ReviewId {  get; set; }
+    public void SetReviewId(Guid reviewId) => ReviewId = reviewId;
+
+    private Guid UserId { get; set; }
+    public void SetUserId(Guid userId) => UserId = userId;
+
+    private class CreateCommentCommandHandler(IReviewRepository reviewRepository, IMapper mapper) : IRequestHandler<CreateCommentCommand>
+    {
+        private readonly IReviewRepository _reviewRepository = reviewRepository;
+        private readonly IMapper _mapper = mapper;
+
+        public async Task Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+        {
+            _ = await _reviewRepository.GetReviewByIdAsync(request.ReviewId, cancellationToken)
+                ?? throw new NotFoundException("Review with given ID not found");
+
+            var comment = _mapper.Map<Comment>(request);
+            comment.ReviewId = request.ReviewId;
+            comment.UserId = request.UserId;
+
+            await _reviewRepository.AddCommentAsync(comment, cancellationToken);
+            await _reviewRepository.SaveChangesAsync(cancellationToken);
+        }
+    }
+}

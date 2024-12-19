@@ -41,6 +41,15 @@ public class ReviewController(IMediator mediator) : ControllerBase
         return Ok(books);
     }
 
+    [HttpPost("{reviewId}/Comment")]
+    public async Task<ActionResult> AddComment([FromRoute] Guid reviewId, [FromBody] CreateCommentCommand command)
+    {
+        command.SetReviewId(reviewId);
+        await _mediator.Send(command);
+
+        return NoContent();
+    }
+
     //Temporary solutions
     [HttpGet("{id:guid}")]
     public async Task<ActionResult> GetReviewDetails(Guid id)
