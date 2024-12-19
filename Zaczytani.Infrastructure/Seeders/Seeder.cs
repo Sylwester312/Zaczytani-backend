@@ -240,6 +240,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             Id = Guid.NewGuid(),
             Name = "Przeczytane",
             UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+            Type = BookShelfType.Read,
             IsDefault = true,
             Books = new List<Book> { books.FirstOrDefault(b => b.Title.Contains("Harry Potter i Komnata Tajemnic"))! }
 
@@ -249,6 +250,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             Id = Guid.NewGuid(),
             Name = "Chce przeczytać",
             UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+            Type = BookShelfType.ToRead,
             IsDefault = true,
             Books = new List<Book> { books.FirstOrDefault(b => b.Title.Contains("Harry Potter i Kamień Filozoficzny"))! }
 
@@ -258,6 +260,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             Id = Guid.NewGuid(),
             Name = "Aktualnie czytane",
             UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+            Type = BookShelfType.Reading,
             IsDefault = true
         }
     };

@@ -1,9 +1,11 @@
 ﻿using Zaczytani.Domain.Entities;
+using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.Domain.Repositories;
 
 public interface IBookShelfRepository
 {
+    Task<BookShelf?> GetBookShelfByTypeAsync(BookShelfType type, Guid userId, CancellationToken cancellationToken);
     Task<IEnumerable<BookShelf>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken);
     Task<BookShelf?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<BookShelf?> GetByIdWithBooksAsync(Guid shelfId, Guid userId, CancellationToken cancellationToken);
