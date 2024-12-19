@@ -10,6 +10,14 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
     private readonly BookDbContext _dbContext = dbContext;
 
     public async Task AddAsync(Review entity) => await _dbContext.AddAsync(entity);
+    public async Task<IEnumerable<Review>> GetCurrentlyReadingBooksAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Reviews
+            .Where(r => r.UserId == userId && !r.IsFinal)
+            .Include(r => r.Book)
+            .ThenInclude(b => b.Authors)
+            .ToListAsync(cancellationToken);
+    }
 
     public async Task<Review?> GetLatestReviewByBookIdAsync(Guid bookId, Guid userId, CancellationToken cancellationToken)
         => await _dbContext.Reviews

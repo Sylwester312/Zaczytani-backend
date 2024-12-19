@@ -15,10 +15,11 @@ public record GetRandomBookCommand : IRequest<BookDto>, IUserIdAssignable
         UserId = userId;
     }
 
-    private class Handler(IUserDrawnBookRepository userDrawnBookRepository, IBookRepository bookRepository, IMapper mapper) : IRequestHandler<GetRandomBookCommand, BookDto>
+    private class Handler(IUserDrawnBookRepository userDrawnBookRepository, IBookRepository bookRepository, IFileStorageRepository fileStorageRepository, IMapper mapper) : IRequestHandler<GetRandomBookCommand, BookDto>
     {
         private readonly IUserDrawnBookRepository _userDrawnBookRepository = userDrawnBookRepository;
         private readonly IBookRepository _bookRepository = bookRepository;
+        private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
         private readonly IMapper _mapper = mapper;
 
         public async Task<BookDto> Handle(GetRandomBookCommand request, CancellationToken cancellationToken)
@@ -52,7 +53,10 @@ public record GetRandomBookCommand : IRequest<BookDto>, IUserIdAssignable
             await _userDrawnBookRepository.AddAsync(userDrawnBook);
             await _userDrawnBookRepository.SaveChangesAsync();
 
-            return _mapper.Map<BookDto>(randomBook);
+            var bookDtoWithImage = _mapper.Map<BookDto>(randomBook);
+            bookDtoWithImage.ImageUrl = _fileStorageRepository.GetFileUrl(randomBook.Image);
+
+            return bookDtoWithImage;
         }
     }
 }
