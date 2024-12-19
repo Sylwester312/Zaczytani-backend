@@ -9,7 +9,10 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
 {
     private readonly BookDbContext _dbContext = dbContext;
 
-    public async Task AddAsync(Review entity) => await _dbContext.AddAsync(entity);
+    public async Task AddAsync(Review entity, CancellationToken cancellationToken) => await _dbContext.AddAsync(entity, cancellationToken);
+
+    public async Task AddCommentAsync(Comment entity, CancellationToken cancellationToken) => await _dbContext.AddAsync(entity, cancellationToken);
+
     public async Task<IEnumerable<Review>> GetCurrentlyReadingBooksAsync(Guid userId, CancellationToken cancellationToken)
     {
         return await _dbContext.Reviews
@@ -26,7 +29,7 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
         .OrderByDescending(r => r.CreatedDate)
         .FirstOrDefaultAsync(cancellationToken);
 
-    public async Task<Review?> GetReviewByIdAsync(Guid id) => await _dbContext.Reviews.FirstOrDefaultAsync(x => x.Id == id);
+    public async Task<Review?> GetReviewByIdAsync(Guid id, CancellationToken cancellationToken) => await _dbContext.Reviews.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-    public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
+    public Task SaveChangesAsync(CancellationToken cancellationToken) => _dbContext.SaveChangesAsync(cancellationToken);
 }

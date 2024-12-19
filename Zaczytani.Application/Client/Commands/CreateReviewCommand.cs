@@ -47,8 +47,8 @@ public class CreateReviewCommand : IRequest<Guid>, IUserIdAssignable
             review.BookId = request.BookId;
             review.UserId = request.UserId;
 
-            await _reviewRepository.AddAsync(review);
-            await _reviewRepository.SaveChangesAsync();
+            await _reviewRepository.AddAsync(review, cancellationToken);
+            await _reviewRepository.SaveChangesAsync(cancellationToken);
 
             if (request.IsFinal || request.Progress == book.PageNumber)
             {

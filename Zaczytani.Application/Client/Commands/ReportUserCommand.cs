@@ -29,7 +29,7 @@ public class ReportUserCommand : IRequest, IUserIdAssignable
         private readonly IMapper _mapper = mapper;
         public async Task Handle(ReportUserCommand request, CancellationToken cancellationToken)
         {
-            _ = await _reviewRepository.GetReviewByIdAsync(request.ReviewId)
+            _ = await _reviewRepository.GetReviewByIdAsync(request.ReviewId, cancellationToken)
                 ?? throw new NotFoundException("Review with given ID not found");
 
             var report = _mapper.Map<Report>(request);
