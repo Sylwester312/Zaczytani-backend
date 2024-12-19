@@ -17,7 +17,7 @@ public class Review
     [Required]
     public int Progress { get; set; }
 
-    public int Likes { get; set; } = 0;
+    public List<Guid> Likes { get; set; } = new();
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 
