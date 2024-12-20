@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Zaczytani.Application.Filters;
+using Zaczytani.Domain.Exceptions;
 using Zaczytani.Domain.Repositories;
 
 public record UnlikeReviewCommand(Guid ReviewId) : IRequest, IUserIdAssignable
@@ -15,7 +16,7 @@ public record UnlikeReviewCommand(Guid ReviewId) : IRequest, IUserIdAssignable
         public async Task Handle(UnlikeReviewCommand request, CancellationToken cancellationToken)
         {
             var review = await _reviewRepository.GetReviewByIdAsync(request.ReviewId, cancellationToken)
-                ?? throw new KeyNotFoundException("Review not found");
+                ?? throw new NotFoundException("Review not found");
 
             if (!review.Likes.Contains(request.UserId))
                 throw new InvalidOperationException("User has not liked this review.");
