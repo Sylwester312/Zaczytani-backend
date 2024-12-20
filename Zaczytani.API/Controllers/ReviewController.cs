@@ -56,5 +56,21 @@ public class ReviewController(IMediator mediator) : ControllerBase
     {
         return Ok();
     }
+
+    [HttpPost("{id:guid}/like")]
+    public async Task<IActionResult> LikeReview([FromRoute] Guid id)
+    {
+        var command = new LikeReviewCommand(id);
+        await _mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPost("{id:guid}/unlike")]
+    public async Task<IActionResult> UnlikeReview([FromRoute] Guid id)
+    {
+        var command = new UnlikeReviewCommand(id);
+        await _mediator.Send(command);
+        return Ok();
+    }
 }
 
