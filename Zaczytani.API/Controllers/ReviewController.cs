@@ -33,14 +33,6 @@ public class ReviewController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("CurrentlyReading")]
-    public async Task<ActionResult<IEnumerable<CurrentlyReadingBookDto>>> GetCurrentlyReadingBooks()
-    {
-        var query = new GetCurrentlyReadingBooksQuery();
-        var books = await _mediator.Send(query);
-        return Ok(books);
-    }
-
     [HttpPost("{reviewId}/Comment")]
     public async Task<ActionResult> AddComment([FromRoute] Guid reviewId, [FromBody] CreateCommentCommand command)
     {

@@ -2,12 +2,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zaczytani.Application.Admin.Commands;
-using Zaczytani.Application.Client.Commands;
 using Zaczytani.Application.Client.Queries;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
 using Zaczytani.Application.Shared.Queries;
-using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Enums;
 using Zaczytani.Domain.Helpers;
 
@@ -75,6 +73,14 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         var query = new HasDrawnBookTodayQuery();
         var book = await _mediator.Send(query);
         return book == null ? NotFound() : Ok(book);
+    }
+
+    [HttpGet("CurrentlyReading")]
+    public async Task<ActionResult<IEnumerable<ReadingBookDto>>> GetCurrentlyReadingBooks()
+    {
+        var query = new GetCurrentlyReadingBooksQuery();
+        var books = await _mediator.Send(query);
+        return Ok(books);
     }
 
 }

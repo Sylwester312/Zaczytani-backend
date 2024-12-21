@@ -45,6 +45,10 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
             .HasForeignKey(bs => bs.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<BookShelf>()
+            .HasMany(bs => bs.Books)
+            .WithMany();
+
         modelBuilder.Entity<Challenge>()
             .HasMany(c => c.UserProgress)
             .WithOne(up => up.Challenge)

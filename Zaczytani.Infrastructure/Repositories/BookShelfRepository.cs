@@ -12,6 +12,8 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
     public async Task<BookShelf?> GetBookShelfByTypeAsync(BookShelfType type, Guid userId, CancellationToken cancellationToken)
     {
         return await _dbContext.BookShelves
+            .Include(b => b.Books)
+                .ThenInclude(b => b.Authors)
             .Where(b => b.Type == type && b.UserId == userId)
             .FirstOrDefaultAsync(cancellationToken);
     }

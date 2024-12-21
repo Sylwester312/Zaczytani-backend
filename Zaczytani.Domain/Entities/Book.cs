@@ -19,7 +19,7 @@ public class Book
 
     [Required]
     [MaxLength(1000)]
-    public string Description {  get; set; } = null!;
+    public string Description { get; set; } = null!;
 
     [Required]
     public int PageNumber { get; set; }
@@ -39,7 +39,7 @@ public class Book
     /// </summary>
     [ForeignKey(nameof(User))]
     public Guid? UserId { get; set; }
-    
+
     public virtual User? User { get; set; }
 
     public virtual PublishingHouse PublishingHouse { get; set; } = null!;
