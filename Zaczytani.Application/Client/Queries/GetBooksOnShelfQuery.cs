@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using Zaczytani.Domain.Repositories;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
+using Zaczytani.Domain.Enums;
+using Zaczytani.Domain.Exceptions;
+using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Client.Queries;
 
@@ -19,12 +21,26 @@ public record GetBooksOnShelfQuery(Guid Id) : IRequest<IEnumerable<BookDto>>, IU
 
         public async Task<IEnumerable<BookDto>> Handle(GetBooksOnShelfQuery request, CancellationToken cancellationToken)
         {
-            var bookshelf = await _bookshelfRepository.GetByIdWithBooksAsync(request.Id, request.UserId, cancellationToken);
+            var bookshelf = await _bookshelfRepository.GetByIdWithBooksAsync(request.Id, request.UserId, cancellationToken)
+                ?? throw new NotFoundException("Bookshelf not found or access denied.");
 
-            if (bookshelf == null)
-                throw new KeyNotFoundException("Bookshelf not found or access denied.");
+            var bookDtos = bookshelf.Books.Select(book =>
+            {
+                var bookDto = _mapper.Map<BookDto>(book);
+                if (bookshelf.Type == BookShelfType.Read)
+                {
+                    bookDto.Rating = book.Reviews
+                        .Where(r => r.IsFinal 
+                            && r.UserId == request.UserId 
+                            && r.Rating is not null)
+                        .Average(r => r.Rating);
+                }
+                
+                bookDto.Readers = _bookshelfRepository.GetBookCountOnReadShelf(book.Id);
+                return bookDto;
+            });
 
-            return _mapper.Map<IEnumerable<BookDto>>(bookshelf.Books);
+            return bookDtos;
         }
     }
 }

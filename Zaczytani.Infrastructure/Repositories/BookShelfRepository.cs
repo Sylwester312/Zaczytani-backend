@@ -35,6 +35,11 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
     {
         return await _dbContext.BookShelves
             .Include(bs => bs.Books)
+                .ThenInclude(b => b.Reviews)
+            .Include(bs => bs.Books)
+                .ThenInclude(b => b.Authors)
+            .Include(bs => bs.Books)
+                .ThenInclude(b => b.PublishingHouse)
             .FirstOrDefaultAsync(bs => bs.Id == shelfId && bs.UserId == userId, cancellationToken);
     }
 
@@ -56,6 +61,22 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
         {
             _dbContext.BookShelves.Remove(shelf);
         }
+    }
+
+    public async Task<int> GetBookCountOnReadShelfAsync(Guid bookId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.BookShelves
+            .Where(bs => bs.Type == BookShelfType.Read)
+            .SelectMany(bs => bs.Books)
+            .CountAsync(b => b.Id == bookId, cancellationToken);
+    }
+
+    public int GetBookCountOnReadShelf(Guid bookId)
+    {
+        return _dbContext.BookShelves
+            .Where(bs => bs.Type == BookShelfType.Read)
+            .SelectMany(bs => bs.Books)
+            .Count(b => b.Id == bookId);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)

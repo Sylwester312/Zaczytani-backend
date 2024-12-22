@@ -11,12 +11,20 @@ internal class DtosProfile : Profile
     {
         #region Book
         CreateMap<Book, BookDto>()
-            .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name));
+            .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name))
+            .ForMember(x => x.Rating, opt => opt.MapFrom(src => src.Reviews.Where(r => r.Rating != null).Average(r => r.Rating)))
+            .ForMember(x => x.RatingCount, opt => opt.MapFrom(src => src.Reviews.Where(r => r.Rating != null).Count()))
+            .ForMember(x => x.Reviews, opt => opt.MapFrom(src => src.Reviews.Where(r => r.Content != null).Count()));
 
         CreateMap<Book, SearchBookDto>()
-            .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name));
+            .ForMember(x => x.PublishingHouse, opt => opt.MapFrom(src => src.PublishingHouse.Name))
+            .ForMember(x => x.Rating, opt => opt.MapFrom(src => src.Reviews.Where(r => r.Rating != null).Average(r => r.Rating)))
+            .ForMember(x => x.RatingCount, opt => opt.MapFrom(src => src.Reviews.Where(r => r.Rating != null).Count()))
+            .ForMember(x => x.Reviews, opt => opt.MapFrom(src => src.Reviews.Where(r => r.Content != null).Count()));
 
         CreateMap<Book, ReadingBookDto>();
+
+        CreateMap<Book, ReviewDetailsBookDto>();
         #endregion
 
         #region Author
@@ -49,5 +57,19 @@ internal class DtosProfile : Profile
             .ForMember(desc => desc.Review, opt => opt.MapFrom(src => src.Review.Content));
         #endregion
 
+        #region Review
+        CreateMap<Review,BookReviewDto>()
+            .ForMember(x => x.Comments, opt => opt.MapFrom(src => src.Comments.Count()))
+            .ForMember(x => x.Likes, opt => opt.MapFrom(src => src.Likes.Count()));
+
+        CreateMap<Review, ReviewDetailsDto>()
+            .ForMember(x => x.Likes, opt => opt.MapFrom(src => src.Likes.Count()));
+
+        CreateMap<Review, NoteDto>();
+        #endregion
+
+        #region Comment
+        CreateMap<Comment, CommentDto>();
+        #endregion
     }
 }

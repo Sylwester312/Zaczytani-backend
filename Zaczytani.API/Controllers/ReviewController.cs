@@ -42,11 +42,12 @@ public class ReviewController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    //Temporary solutions
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult> GetReviewDetails(Guid id)
+    public async Task<ActionResult<ReviewDetailsDto>> GetReviewDetails(Guid id)
     {
-        return Ok();
+        var query = new GetReviewDetailsQuery(id);
+        var reviewDetails = await _mediator.Send(query);
+        return Ok(reviewDetails);
     }
 
     [HttpPost("{id:guid}/like")]

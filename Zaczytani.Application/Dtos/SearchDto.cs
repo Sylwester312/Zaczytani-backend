@@ -15,5 +15,9 @@ public class SearchBookDto
     public string? ImageUrl { get; set; }
     public List<BookGenre> Genre { get; set; }
     public string? Series { get; set; }
+    public double? Rating { get; set; }
+    public int RatingCount { get; set; }
+    public int Reviews { get; set; }
+    public int Readers { get; set; }
     public string PublishingHouse { get; set; }
 }
