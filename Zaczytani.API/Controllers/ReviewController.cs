@@ -42,7 +42,6 @@ public class ReviewController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
-    //Temporary solutions
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<ReviewDetailsDto>> GetReviewDetails(Guid id)
     {
