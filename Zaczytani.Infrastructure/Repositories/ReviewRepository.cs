@@ -13,6 +13,21 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
 
     public async Task AddCommentAsync(Comment entity, CancellationToken cancellationToken) => await _dbContext.AddAsync(entity, cancellationToken);
 
+    public async Task<IEnumerable<Review>> GetFinalReviewsByBookId(Guid bookId, CancellationToken cancellationToken) 
+        => await _dbContext.Reviews
+        .Include(r => r.User)
+        .Include(r => r.Comments)
+        .Where(r => r.BookId == bookId && r.IsFinal == true)
+        .ToListAsync(cancellationToken);
+
+    public async Task<IEnumerable<Review>> GetReviewsByBookIdAndUserId(Guid bookId, Guid userId, CancellationToken cancellationToken)
+        => await _dbContext.Reviews
+        .Where(r => r.BookId == bookId 
+            && r.UserId == userId
+            && r.IsFinal == false)
+        .OrderByDescending(r => r.CreatedDate)
+        .ToListAsync(cancellationToken);
+
     public async Task<Review?> GetLatestReviewByBookIdAsync(Guid bookId, Guid userId, CancellationToken cancellationToken)
         => await _dbContext.Reviews
         .Include(r => r.Book)
@@ -21,6 +36,15 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
         .FirstOrDefaultAsync(cancellationToken);
 
     public async Task<Review?> GetReviewByIdAsync(Guid id, CancellationToken cancellationToken) => await _dbContext.Reviews.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+    public async Task<Review?> GetFinalReviewByIdAsync(Guid id, CancellationToken cancellationToken)
+        => await _dbContext.Reviews
+        .Include(r => r.Book)
+            .ThenInclude(b => b.Authors)
+        .Include(r => r.User)
+        .Include(r => r.Comments)
+        .Where(r => r.IsFinal == true)
+        .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public Task SaveChangesAsync(CancellationToken cancellationToken) => _dbContext.SaveChangesAsync(cancellationToken);
 }

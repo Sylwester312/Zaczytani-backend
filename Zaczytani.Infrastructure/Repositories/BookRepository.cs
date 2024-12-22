@@ -22,8 +22,10 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
         return await _dbContext.Books
             .Include(b => b.Authors)
             .Include(b => b.PublishingHouse)
+            .Include(b => b.Reviews)
             .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
     }
+
     public IQueryable<Book> GetUnseenBooks(Guid userId)
     {
         return _dbContext.Books

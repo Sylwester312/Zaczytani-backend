@@ -12,5 +12,7 @@ public interface IBookShelfRepository
     Task AddAsync(BookShelf bookshelf, CancellationToken cancellationToken);
     Task UpdateAsync(BookShelf bookshelf, CancellationToken cancellationToken);
     Task DeleteAsync(Guid id, CancellationToken cancellationToken);
+    Task<int> GetBookCountOnReadShelfAsync(Guid bookId, CancellationToken cancellationToken);
+    int GetBookCountOnReadShelf(Guid bookId);
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -1,10 +1,12 @@
-﻿using MediatR;
-using AutoMapper;
-using Zaczytani.Domain.Entities;
-using Zaczytani.Domain.Repositories;
-using Zaczytani.Application.Filters;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zaczytani.Application.Dtos;
+using Zaczytani.Application.Filters;
+using Zaczytani.Domain.Entities;
+using Zaczytani.Domain.Repositories;
+
+namespace Zaczytani.Application.Client.Commands;
 
 public record GetRandomBookCommand : IRequest<BookDto>, IUserIdAssignable
 {
@@ -27,21 +29,19 @@ public record GetRandomBookCommand : IRequest<BookDto>, IUserIdAssignable
             var existingDrawnBook = await _userDrawnBookRepository.GetDrawnBookByUserIdAndDateAsync(request.UserId, DateTime.UtcNow.Date, cancellationToken);
             if (existingDrawnBook != null)
             {
-                return _mapper.Map<BookDto>(existingDrawnBook.Book);
+                var bookDto = _mapper.Map<BookDto>(existingDrawnBook.Book);
+                bookDto.ImageUrl = _fileStorageRepository.GetFileUrl(existingDrawnBook.Book.Image);
+                return bookDto;
             }
 
             var unseenBooksQuery = _bookRepository.GetUnseenBooks(request.UserId);
 
-
             var randomBook = await unseenBooksQuery
                 .OrderBy(_ => Guid.NewGuid())
                 .Include(b => b.Authors)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (randomBook == null)
-            {
-                throw new InvalidOperationException("No unseen books available to draw.");
-            }
+                .Include(b => b.Reviews)
+                .FirstOrDefaultAsync(cancellationToken)
+                ?? throw new InvalidOperationException("No unseen books available to draw.");
 
             var userDrawnBook = new UserDrawnBook
             {

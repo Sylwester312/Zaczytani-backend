@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Zaczytani.Application.Admin.Commands;
+using Zaczytani.Application.Client.Commands;
 using Zaczytani.Application.Client.Queries;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
@@ -40,6 +41,14 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     public async Task<ActionResult<BookDto>> GetBookDetails(Guid id)
     {
         var query = new GetBookDetailsQuery(id);
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("{id:guid}/Reviews")]
+    public async Task<ActionResult<IEnumerable<BookReviewDto>>> GetBookReviews(Guid id)
+    {
+        var query = new GetBookReviewsQuery(id);
         var result = await _mediator.Send(query);
         return Ok(result);
     }

@@ -10,17 +10,19 @@ public class SearchBookQuery : IRequest<IEnumerable<SearchDto>>
 {
     public string SearchPhrase { get; set; } = string.Empty;
 
-    private class SearchBookQueryHandler(IBookRepository bookRepository, IFileStorageRepository fileStorageRepository, IMapper mapper) : IRequestHandler<SearchBookQuery, IEnumerable<SearchDto>>
+    private class SearchBookQueryHandler(IBookRepository bookRepository, IBookShelfRepository bookShelfRepository, IFileStorageRepository fileStorageRepository, IMapper mapper) : IRequestHandler<SearchBookQuery, IEnumerable<SearchDto>>
     {
         private readonly IMapper _mapper = mapper;
         private readonly IBookRepository _bookRepository = bookRepository;
         private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
+        private readonly IBookShelfRepository _bookShelfRepository = bookShelfRepository;
 
         public async Task<IEnumerable<SearchDto>> Handle(SearchBookQuery request, CancellationToken cancellationToken)
         {
             var books = await _bookRepository.GetBySearchPhrase(request.SearchPhrase)
                 .Include(b => b.Authors)
                 .Include(b => b.PublishingHouse)
+                .Include(b => b.Reviews)
                 .ToListAsync(cancellationToken);
 
             var result = books
@@ -30,9 +32,11 @@ public class SearchBookQuery : IRequest<IEnumerable<SearchDto>>
                     g.Key.Id,
                     g.Key.Name,
                     g.Key.Image is not null ? _fileStorageRepository.GetFileUrl(g.Key.Image) : null,
-                    g.Select(x => {
+                    g.Select(x =>
+                    {
                         var bookDto = _mapper.Map<SearchBookDto>(x.Book);
-                        bookDto.ImageUrl = x.Book.Image is not null ? _fileStorageRepository.GetFileUrl(x.Book.Image) : null;
+                        bookDto.ImageUrl = _fileStorageRepository.GetFileUrl(x.Book.Image);
+                        bookDto.Readers = _bookShelfRepository.GetBookCountOnReadShelf(x.Book.Id);
                         return bookDto;
                     })
                 ));
