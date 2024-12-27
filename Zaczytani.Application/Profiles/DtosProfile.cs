@@ -57,5 +57,24 @@ internal class DtosProfile : Profile
             .ForMember(dest => dest.Progress, opt => opt.MapFrom(src => src.Progress))
             .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.Image));
         #endregion
+
+        #region UserProfile
+        CreateMap<User, UserProfileDto>()
+            .ForMember(dest => dest.FavoriteGenres, opt => opt.MapFrom(src => src.FavoriteGenres.Select(g => g.ToString())));
+        #endregion
+
+        #region Challenge
+        CreateMap<Challenge, ChallengeDto>()
+            .ForMember(dest => dest.BooksRead, opt => opt.MapFrom(src => src.UserProgress.Sum(up => up.BooksRead)))
+            .ForMember(dest => dest.IsCompleted, opt => opt.MapFrom(src => src.UserProgress.Any(up => up.IsCompleted)));
+
+        CreateMap<ChallengeProgress, ChallengeDto>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Challenge.Id))
+            .ForMember(dest => dest.BooksToRead, opt => opt.MapFrom(src => src.Challenge.BooksToRead))
+            .ForMember(dest => dest.CriteriaValue, opt => opt.MapFrom(src => src.Challenge.CriteriaValue))
+            .ForMember(dest => dest.Criteria, opt => opt.MapFrom(src => src.Challenge.Criteria))
+            .ForMember(dest => dest.BooksRead, opt => opt.MapFrom(src => src.BooksRead))
+            .ForMember(dest => dest.IsCompleted, opt => opt.MapFrom(src => src.IsCompleted));
+        #endregion
     }
 }

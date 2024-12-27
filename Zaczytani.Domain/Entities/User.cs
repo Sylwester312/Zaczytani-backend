@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.Domain.Entities;
 public class User : IdentityUser<Guid>
@@ -16,6 +17,7 @@ public class User : IdentityUser<Guid>
 
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
+    public string? Image { get; set; }
     public ICollection<UserDrawnBook> UserDrawnBooks { get; set; } = [];
     public ICollection<BookShelf> BookShelves { get; set; } = [];
     public ICollection<Challenge> Challenges { get; set; } = [];
@@ -24,6 +26,7 @@ public class User : IdentityUser<Guid>
     public ICollection<Comment> Comments { get; set; } = [];
     public ICollection<Follower> Followers { get; set; } = [];
     public ICollection<Follower> Following { get; set; } = [];
+    public List<BookGenre> FavoriteGenres { get; set; } = new();
 }
 
 public class UserRole : IdentityRole<Guid>
