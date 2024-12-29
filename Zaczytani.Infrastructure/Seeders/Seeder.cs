@@ -100,6 +100,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             NormalizedEmail = "admin@email.com".ToUpper(),
             UserName = "admin",
             SecurityStamp = Guid.NewGuid().ToString(),
+            LockoutEnabled = true,
             NormalizedUserName = "admin".ToUpper(),
         };
 
@@ -113,6 +114,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             NormalizedEmail = "user@email.com".ToUpper(),
             UserName = "user",
             SecurityStamp = Guid.NewGuid().ToString(),
+            LockoutEnabled = true,
             NormalizedUserName = "user".ToUpper(),
         };
 
