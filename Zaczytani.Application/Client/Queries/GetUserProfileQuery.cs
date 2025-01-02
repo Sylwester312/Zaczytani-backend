@@ -40,7 +40,6 @@ public record GetUserProfileQuery : IRequest<UserProfileDto>, IUserIdAssignable
                 FirstName = "User",
                 LastName = "Name",
                 FavoriteGenres = favoriteGenres.Select(g => g.ToString()).ToList(),
-                Bookshelves = _mapper.Map<IEnumerable<BookShelfDto>>(bookShelves),
                 ReadBooks = _mapper.Map<IEnumerable<BookDto>>(readBooksShelf?.Books ?? Enumerable.Empty<Book>()),
                 CurrentlyReading = _mapper.Map<IEnumerable<BookDto>>(currentlyReadingShelf?.Books ?? Enumerable.Empty<Book>()),
                 Challenges = _mapper.Map<IEnumerable<ChallengeDto>>(challenges)
