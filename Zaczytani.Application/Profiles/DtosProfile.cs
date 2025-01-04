@@ -35,6 +35,9 @@ internal class DtosProfile : Profile
 
         #region User
         CreateMap<User, UserDto>();
+        CreateMap<User, UserProfileDto>()
+            .ForMember(dest => dest.FavoriteGenres, opt => opt.Ignore())
+            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Image));
         #endregion
 
         #region Bookshelf
@@ -56,11 +59,6 @@ internal class DtosProfile : Profile
             .ForMember(dest => dest.Authors, opt => opt.MapFrom(src => src.Book.Authors))
             .ForMember(dest => dest.Progress, opt => opt.MapFrom(src => src.Progress))
             .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Book.Image));
-        #endregion
-
-        #region UserProfile
-        CreateMap<User, UserProfileDto>()
-            .ForMember(dest => dest.FavoriteGenres, opt => opt.MapFrom(src => src.FavoriteGenres.Select(g => g.ToString())));
         #endregion
 
         #region Challenge

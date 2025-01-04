@@ -26,7 +26,6 @@ public class User : IdentityUser<Guid>
     public ICollection<Comment> Comments { get; set; } = [];
     public ICollection<Follower> Followers { get; set; } = [];
     public ICollection<Follower> Following { get; set; } = [];
-    public List<BookGenre> FavoriteGenres { get; set; } = new();
 }
 
 public class UserRole : IdentityRole<Guid>

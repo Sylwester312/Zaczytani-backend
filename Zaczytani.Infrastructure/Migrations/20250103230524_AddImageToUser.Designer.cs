@@ -12,8 +12,8 @@ using Zaczytani.Infrastructure.Persistance;
 namespace Zaczytani.Infrastructure.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20241227222141_AddFavouriteGenreToUser")]
-    partial class AddFavouriteGenreToUser
+    [Migration("20250103230524_AddImageToUser")]
+    partial class AddImageToUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -512,10 +512,6 @@ namespace Zaczytani.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FavoriteGenres")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
