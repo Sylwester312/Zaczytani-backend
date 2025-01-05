@@ -7,7 +7,6 @@ public class UserProfileDto
     public string? ImageUrl { get; set; }
     public int TotalBooksRead { get; set; }
     public List<string> FavoriteGenres { get; set; } = new();
-    public IEnumerable<UserBookRequestDto> BookRequests { get; set; } = new List<UserBookRequestDto>();
     public List<string> Badges { get; set; } = new();
     public IEnumerable<BookDto> ReadBooks { get; set; } = [];
     public IEnumerable<BookDto> CurrentlyReading { get; set; } = [];

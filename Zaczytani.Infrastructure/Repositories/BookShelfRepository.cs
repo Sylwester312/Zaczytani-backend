@@ -21,6 +21,7 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
     public async Task<IEnumerable<BookShelf>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         return await _dbContext.BookShelves
+            .Include(b => b.Books)
             .Where(b => b.UserId == userId)
             .ToListAsync(cancellationToken);
     }
