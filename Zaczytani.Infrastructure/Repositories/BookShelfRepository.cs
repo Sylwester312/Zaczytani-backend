@@ -1,8 +1,8 @@
-﻿using Zaczytani.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Zaczytani.Domain.Entities;
+using Zaczytani.Domain.Enums;
 using Zaczytani.Domain.Repositories;
 using Zaczytani.Infrastructure.Persistance;
-using Microsoft.EntityFrameworkCore;
-using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.Infrastructure.Repositories;
 internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfRepository
@@ -21,8 +21,12 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
     public async Task<IEnumerable<BookShelf>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         return await _dbContext.BookShelves
-            .Include(b => b.Books)
+            .Include(bs => bs.Books)
+                .ThenInclude(b => b.Reviews)
+            .Include(bs => bs.Books)
                 .ThenInclude(b => b.Authors)
+            .Include(bs => bs.Books)
+                .ThenInclude(b => b.PublishingHouse)
             .Where(b => b.UserId == userId)
             .ToListAsync(cancellationToken);
     }
@@ -33,6 +37,7 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
             .Include(b => b.Books)
             .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
     }
+
     public async Task<BookShelf?> GetByIdWithBooksAsync(Guid shelfId, Guid userId, CancellationToken cancellationToken)
     {
         return await _dbContext.BookShelves
