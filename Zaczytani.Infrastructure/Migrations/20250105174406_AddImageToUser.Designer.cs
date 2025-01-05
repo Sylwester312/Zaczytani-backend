@@ -12,7 +12,7 @@ using Zaczytani.Infrastructure.Persistance;
 namespace Zaczytani.Infrastructure.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20250103230524_AddImageToUser")]
+    [Migration("20250105174406_AddImageToUser")]
     partial class AddImageToUser
     {
         /// <inheritdoc />
@@ -38,6 +38,21 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.HasIndex("BooksId");
 
                     b.ToTable("AuthorBook");
+                });
+
+            modelBuilder.Entity("BookBookShelf", b =>
+                {
+                    b.Property<Guid>("BookShelfId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BooksId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BookShelfId", "BooksId");
+
+                    b.HasIndex("BooksId");
+
+                    b.ToTable("BookBookShelf");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -168,9 +183,6 @@ namespace Zaczytani.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BookShelfId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -209,8 +221,6 @@ namespace Zaczytani.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookShelfId");
 
                     b.HasIndex("PublishingHouseId");
 
@@ -472,8 +482,9 @@ namespace Zaczytani.Infrastructure.Migrations
                     b.Property<bool>("IsFinal")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Likes")
-                        .HasColumnType("int");
+                    b.Property<string>("Likes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Progress")
                         .HasColumnType("int");
@@ -640,6 +651,21 @@ namespace Zaczytani.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BookBookShelf", b =>
+                {
+                    b.HasOne("Zaczytani.Domain.Entities.BookShelf", null)
+                        .WithMany()
+                        .HasForeignKey("BookShelfId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Zaczytani.Domain.Entities.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Zaczytani.Domain.Entities.UserRole", null)
@@ -693,10 +719,6 @@ namespace Zaczytani.Infrastructure.Migrations
 
             modelBuilder.Entity("Zaczytani.Domain.Entities.Book", b =>
                 {
-                    b.HasOne("Zaczytani.Domain.Entities.BookShelf", null)
-                        .WithMany("Books")
-                        .HasForeignKey("BookShelfId");
-
                     b.HasOne("Zaczytani.Domain.Entities.PublishingHouse", "PublishingHouse")
                         .WithMany()
                         .HasForeignKey("PublishingHouseId")
@@ -862,11 +884,6 @@ namespace Zaczytani.Infrastructure.Migrations
             modelBuilder.Entity("Zaczytani.Domain.Entities.Book", b =>
                 {
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("Zaczytani.Domain.Entities.BookShelf", b =>
-                {
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("Zaczytani.Domain.Entities.Challenge", b =>
