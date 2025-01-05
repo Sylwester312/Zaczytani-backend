@@ -48,6 +48,20 @@ public record GetUserProfileQuery : IRequest<UserProfileDto>, IUserIdAssignable
 
             var challenges = await _challengeRepository.GetChallengesWithProgressByUserId(request.UserId, cancellationToken);
 
+            var readBookDtos = readBooksShelf?.Books.Select(b =>
+            {
+                var book = _mapper.Map<BookDto>(b);
+                book.ImageUrl = _fileStorageRepository.GetFileUrl(b.Image);
+                return book;
+            });
+
+            var currentlyReading = currentlyReadingShelf?.Books.Select(b =>
+            {
+                var book = _mapper.Map<BookDto>(b);
+                book.ImageUrl = _fileStorageRepository.GetFileUrl(b.Image);
+                return book;
+            });
+
             var profileDto = new UserProfileDto
             {
                 FirstName = user.FirstName,
@@ -55,8 +69,8 @@ public record GetUserProfileQuery : IRequest<UserProfileDto>, IUserIdAssignable
                 ImageUrl = userImage,
                 TotalBooksRead = readBooksShelf?.Books.Count ?? 0,
                 FavoriteGenres = favoriteGenres.Select(g => g.ToString()).ToList(),
-                ReadBooks = _mapper.Map<IEnumerable<BookDto>>(readBooksShelf?.Books ?? Enumerable.Empty<Book>()),
-                CurrentlyReading = _mapper.Map<IEnumerable<BookDto>>(currentlyReadingShelf?.Books ?? Enumerable.Empty<Book>()),
+                ReadBooks = readBookDtos ?? [],
+                CurrentlyReading = currentlyReading ?? [],
                 Challenges = _mapper.Map<IEnumerable<ChallengeDto>>(challenges),
                 Badges = new List<string> { "First Book Read", "100 Books Read" } // Na sztywno
             };

@@ -22,6 +22,7 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
     {
         return await _dbContext.BookShelves
             .Include(b => b.Books)
+                .ThenInclude(b => b.Authors)
             .Where(b => b.UserId == userId)
             .ToListAsync(cancellationToken);
     }
