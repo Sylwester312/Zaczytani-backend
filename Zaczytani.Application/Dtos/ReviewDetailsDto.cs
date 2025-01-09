@@ -6,6 +6,7 @@ public class ReviewDetailsDto
     public string Content { get; set; }
     public int Rating { get; set; }
     public int Likes { get; set; }
+    public bool IsLiked { get; set; }
     public UserDto User { get; set; }
     public ReviewDetailsBookDto Book { get; set; }
     public IEnumerable<NoteDto> Notes { get; set; }

@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
 using MediatR;
 using Zaczytani.Application.Dtos;
+using Zaczytani.Application.Filters;
 using Zaczytani.Domain.Exceptions;
 using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Client.Queries;
 
-public record GetReviewDetailsQuery(Guid Id) : IRequest<ReviewDetailsDto>
+public record GetReviewDetailsQuery(Guid Id) : IRequest<ReviewDetailsDto>, IUserIdAssignable
 {
+    private Guid UserId { get; set; }
+    public void SetUserId(Guid userId) => UserId = userId;
+
     private class GetReviewDetailsQueryHandler(IReviewRepository reviewRepository, IFileStorageRepository fileStorageRepository, IMapper mapper) : IRequestHandler<GetReviewDetailsQuery, ReviewDetailsDto>
     {
         private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
@@ -23,6 +27,7 @@ public record GetReviewDetailsQuery(Guid Id) : IRequest<ReviewDetailsDto>
 
             reviewDto.Book.ImageUrl = _fileStorageRepository.GetFileUrl(finalReview.Book.Image);
             reviewDto.Notes = _mapper.Map<IEnumerable<NoteDto>>(reviews);
+            reviewDto.IsLiked = finalReview.Likes.Any(l => l == request.UserId);
 
             return reviewDto;
         }
