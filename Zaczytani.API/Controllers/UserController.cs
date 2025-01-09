@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Zaczytani.Application.Client.Queries;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
-using Zaczytani.Application.Client.Queries;
+using Zaczytani.Application.Shared.Commands;
 
 namespace Zaczytani.API.Controllers;
 
@@ -22,5 +23,12 @@ public class UserController(IMediator mediator, ILogger<UserController> logger) 
         var query = new GetUserProfileQuery();
         var profile = await _mediator.Send(query, cancellationToken);
         return Ok(profile);
+    }
+
+    [HttpPost("ChangePassword")]
+    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return NoContent();
     }
 }
