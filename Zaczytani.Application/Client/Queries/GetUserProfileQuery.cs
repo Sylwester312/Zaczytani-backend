@@ -20,7 +20,6 @@ public record GetUserProfileQuery : IRequest<UserProfileDto>, IUserIdAssignable
         UserManager<User> userManager,
         IUserRepository userRepository,
         IBookShelfRepository bookShelfRepository,
-        IChallengeRepository challengeRepository,
         IFileStorageRepository fileStorageRepository,
         IMapper mapper
     ) : IRequestHandler<GetUserProfileQuery, UserProfileDto>
@@ -28,7 +27,6 @@ public record GetUserProfileQuery : IRequest<UserProfileDto>, IUserIdAssignable
         private readonly UserManager<User> _userManager = userManager;
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IBookShelfRepository _bookShelfRepository = bookShelfRepository;
-        private readonly IChallengeRepository _challengeRepository = challengeRepository;
         private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
         private readonly IMapper _mapper = mapper;
 
@@ -45,8 +43,6 @@ public record GetUserProfileQuery : IRequest<UserProfileDto>, IUserIdAssignable
 
             var readBooksShelf = bookShelves.FirstOrDefault(bs => bs.Type == BookShelfType.Read);
             var currentlyReadingShelf = bookShelves.FirstOrDefault(bs => bs.Type == BookShelfType.Reading);
-
-            var challenges = await _challengeRepository.GetChallengesWithProgressByUserId(request.UserId, cancellationToken);
 
             var readBookDtos = readBooksShelf?.Books.Select(b =>
             {
@@ -71,7 +67,6 @@ public record GetUserProfileQuery : IRequest<UserProfileDto>, IUserIdAssignable
                 FavoriteGenres = favoriteGenres.Select(g => g.ToString()).ToList(),
                 ReadBooks = readBookDtos ?? [],
                 CurrentlyReading = currentlyReading ?? [],
-                Challenges = _mapper.Map<IEnumerable<ChallengeDto>>(challenges),
                 Badges = new List<string> { "First Book Read", "100 Books Read" } // Na sztywno
             };
 

@@ -11,6 +11,7 @@ internal class CommandsProfile : Profile
     {
         CreateMap<CreateBookRequestCommand, BookRequest>()
             .ForMember(x => x.Image, opt => opt.MapFrom(src => src.FileName));
+
         CreateMap<AcceptBookRequestCommand, CreateBookCommand>();
 
         CreateMap<CreateReviewCommand, Review>();
@@ -18,5 +19,7 @@ internal class CommandsProfile : Profile
         CreateMap<ReportUserCommand, Report>();
 
         CreateMap<CreateCommentCommand, Comment>();
+
+        CreateMap<CreateChallengeCommand, Challenge>();
     }
 }

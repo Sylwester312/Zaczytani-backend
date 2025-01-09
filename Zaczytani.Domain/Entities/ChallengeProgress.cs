@@ -22,7 +22,7 @@ public class ChallengeProgress
 
     public int BooksRead { get; set; }
 
-    public bool IsCompleted { get; set; } = false;
+    public DateTime CreateDate { get; set; } = DateTime.Now;
 
     public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
 }

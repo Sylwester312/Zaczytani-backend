@@ -10,5 +10,4 @@ public class UserProfileDto
     public List<string> Badges { get; set; } = new();
     public IEnumerable<BookDto> ReadBooks { get; set; } = [];
     public IEnumerable<BookDto> CurrentlyReading { get; set; } = [];
-    public IEnumerable<ChallengeDto> Challenges { get; set; } = [];
 }
