@@ -32,5 +32,6 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
             .Where(b => !_dbContext.UserDrawnBook
                 .Any(ub => ub.BookId == b.Id && ub.UserId == userId && ub.IsRead));
     }
+    public async Task DeleteAsync(Book entity, CancellationToken cancellationToken)=> _dbContext.Remove(entity);
     public Task SaveChangesAsync(CancellationToken cancellationToken) => _dbContext.SaveChangesAsync(cancellationToken);
 }

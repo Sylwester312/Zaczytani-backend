@@ -28,7 +28,14 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         return CreatedAtAction(nameof(GetBookDetails), new { id = bookId }, new { id = bookId });
 
     }
-
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteBook(Guid id)
+    {
+        var command = new DeleteBookCommand();
+        command.SetId(id);
+        await _mediator.Send(command);
+        return NoContent();
+    }
     [HttpGet("Search")]
     public async Task<ActionResult<IEnumerable<SearchDto>>> SearchBook([FromQuery] SearchBookQuery command)
     {

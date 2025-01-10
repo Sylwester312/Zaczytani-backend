@@ -9,4 +9,5 @@ public interface IBookRepository
     Task<Book?> GetByIdAsync(Guid bookId, CancellationToken cancellationToken);
     IQueryable<Book> GetUnseenBooks(Guid userId);
     Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task DeleteAsync(Book entity,CancellationToken cancellation);
 }
