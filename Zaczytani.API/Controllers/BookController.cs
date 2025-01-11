@@ -29,10 +29,9 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
 
     }
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteBook(Guid id)
+    public async Task<IActionResult> DeleteBook([FromRoute] Guid id)
     {
-        var command = new DeleteBookCommand();
-        command.SetId(id);
+        var command = new DeleteBookCommand(id);
         await _mediator.Send(command);
         return NoContent();
     }
