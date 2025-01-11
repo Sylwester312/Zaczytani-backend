@@ -8,6 +8,8 @@ public interface IBookRepository
     IQueryable<Book> GetBySearchPhrase(string searchPhrase);
     Task<Book?> GetByIdAsync(Guid bookId, CancellationToken cancellationToken);
     IQueryable<Book> GetUnseenBooks(Guid userId);
+
+    Task EditAsync(Book entity);
     Task SaveChangesAsync(CancellationToken cancellationToken);
     Task DeleteAsync(Book entity,CancellationToken cancellation);
 }
