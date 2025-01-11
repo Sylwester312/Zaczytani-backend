@@ -11,4 +11,5 @@ public interface IBookRepository
 
     Task EditAsync(Book entity);
     Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task DeleteAsync(Book entity,CancellationToken cancellation);
 }
