@@ -9,6 +9,7 @@ using Zaczytani.Application.Filters;
 using Zaczytani.Application.Shared.Queries;
 using Zaczytani.Domain.Enums;
 using Zaczytani.Domain.Helpers;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Zaczytani.API.Controllers;
 
@@ -26,7 +27,6 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     {
         var bookId = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetBookDetails), new { id = bookId }, new { id = bookId });
-
     }
 
     [HttpGet("Search")]
@@ -43,6 +43,14 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         var query = new GetBookDetailsQuery(id);
         var result = await _mediator.Send(query);
         return Ok(result);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> EditBookDetails(Guid id, [FromBody] EditBookDetailsCommand command)
+    {
+        command.SetId(id);
+        await _mediator.Send(command);
+        return Ok();
     }
 
     [HttpGet("{id:guid}/Reviews")]
