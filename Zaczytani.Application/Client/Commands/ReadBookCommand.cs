@@ -28,6 +28,9 @@ public record ReadBookCommand(Guid BookId) : IRequest, IUserIdAssignable
 
                 var detachCommand = new DetachBookCommand(readingBookShelf.Id, request.BookId);
                 await _mediator.Send(detachCommand, cancellationToken);
+
+                var updateProgressesCommand = new UpdateChallengeProgressesCommand(request.BookId, true);
+                await _mediator.Send(updateProgressesCommand, cancellationToken);
             }
         }
     }
