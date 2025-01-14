@@ -5,5 +5,11 @@ namespace Zaczytani.Domain.Repositories;
 public interface IBookRepository
 {
     Task AddAsync(Book entity);
-    Task SaveChangesAsync();
+    IQueryable<Book> GetBySearchPhrase(string searchPhrase);
+    Task<Book?> GetByIdAsync(Guid bookId, CancellationToken cancellationToken);
+    IQueryable<Book> GetUnseenBooks(Guid userId);
+
+    Task EditAsync(Book entity);
+    Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task DeleteAsync(Book entity,CancellationToken cancellation);
 }

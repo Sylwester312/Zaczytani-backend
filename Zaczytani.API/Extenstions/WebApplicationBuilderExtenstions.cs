@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Zaczytani.Domain.DescriptionEnumConver;
 
 namespace Zaczytani.API.Extenstions;
 
@@ -6,7 +7,11 @@ public static class WebApplicationBuilderExtenstions
 {
     public static void AddPresentation(this WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers();
+        builder.Services.AddAuthentication();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new DescriptionEnumConverterFactory());
+        });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
