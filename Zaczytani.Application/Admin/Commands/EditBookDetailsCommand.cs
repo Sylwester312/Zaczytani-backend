@@ -52,7 +52,7 @@ namespace Zaczytani.Application.Admin.Commands
                 book.Image = request.FileName;
                 book.Genre = request.Genre;
                 book.Series = request.Series;
-
+                book.Authors = [];
                 foreach (var author in request.Authors)
                 {
                     var existingAuthor = await _authorRepository.GetByNameAsync(author);
