@@ -28,13 +28,13 @@ public class GetCurrentlyReadingBooksQuery : IRequest<IEnumerable<ReadingBookDto
 
             var currentlyReadingBooks = _mapper.Map<IEnumerable<ReadingBookDto>>(readingBookShelf.Books);
 
-            foreach (var book in currentlyReadingBooks)
+            foreach (var (dto, book) in currentlyReadingBooks.Zip(readingBookShelf.Books, (dto, book) => (dto, book)))
             {
-                var review = await _reviewRepository.GetLatestReviewByBookIdAsync(book.Id, request.UserId, cancellationToken);
-                book.Progress = review is not null ? review.Progress : 0;
-                book.ImageUrl = _fileStorageRepository.GetFileUrl(book.ImageUrl);
+                dto.ImageUrl = _fileStorageRepository.GetFileUrl(book.Image);
+                var review = await _reviewRepository.GetLatestReviewByBookIdAsync(dto.Id, request.UserId, cancellationToken);
+                dto.Progress = review is not null ? review.Progress : 0;
             }
-
+        
             return currentlyReadingBooks;
         }
     }

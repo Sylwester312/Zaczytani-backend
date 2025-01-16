@@ -14,16 +14,16 @@ public record GetBooksOnShelfQuery(Guid Id) : IRequest<IEnumerable<BookDto>>, IU
 
     public void SetUserId(Guid userId) => UserId = userId;
 
-    private class Handler(IBookShelfRepository bookshelfRepository, IMapper mapper) : IRequestHandler<GetBooksOnShelfQuery, IEnumerable<BookDto>>
+    private class Handler(IBookShelfRepository bookshelfRepository, IMapper mapper, IFileStorageRepository fileStorageRepository) : IRequestHandler<GetBooksOnShelfQuery, IEnumerable<BookDto>>
     {
         private readonly IBookShelfRepository _bookshelfRepository = bookshelfRepository;
         private readonly IMapper _mapper = mapper;
+        private readonly IFileStorageRepository _fileStorageRepository = fileStorageRepository;
 
         public async Task<IEnumerable<BookDto>> Handle(GetBooksOnShelfQuery request, CancellationToken cancellationToken)
         {
             var bookshelf = await _bookshelfRepository.GetByIdWithBooksAsync(request.Id, request.UserId, cancellationToken)
                 ?? throw new NotFoundException("Bookshelf not found or access denied.");
-
             var bookDtos = bookshelf.Books.Select(book =>
             {
                 var bookDto = _mapper.Map<BookDto>(book);
@@ -35,7 +35,7 @@ public record GetBooksOnShelfQuery(Guid Id) : IRequest<IEnumerable<BookDto>>, IU
                             && r.Rating is not null)
                         .Average(r => r.Rating);
                 }
-                
+                bookDto.ImageUrl = _fileStorageRepository.GetFileUrl(book.Image);
                 bookDto.Readers = _bookshelfRepository.GetBookCountOnReadShelf(book.Id);
                 return bookDto;
             });
