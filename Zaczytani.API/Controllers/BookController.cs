@@ -95,7 +95,7 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
     {
         var query = new HasDrawnBookTodayQuery();
         var book = await _mediator.Send(query);
-        return book == null ? NotFound() : Ok(book);
+        return Ok(book);
     }
 
     [HttpGet("CurrentlyReading")]

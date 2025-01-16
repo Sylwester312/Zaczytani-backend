@@ -50,8 +50,8 @@ public record GetRandomBookCommand : IRequest<BookDto>, IUserIdAssignable
                 DrawnDate = DateTime.UtcNow.Date
             };
 
-            await _userDrawnBookRepository.AddAsync(userDrawnBook);
-            await _userDrawnBookRepository.SaveChangesAsync();
+            await _userDrawnBookRepository.AddAsync(userDrawnBook, cancellationToken);
+            await _userDrawnBookRepository.SaveChangesAsync(cancellationToken);
 
             var bookDtoWithImage = _mapper.Map<BookDto>(randomBook);
             bookDtoWithImage.ImageUrl = _fileStorageRepository.GetFileUrl(randomBook.Image);
