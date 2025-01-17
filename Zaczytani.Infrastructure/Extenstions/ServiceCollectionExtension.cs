@@ -24,6 +24,7 @@ public static class ServiceCollectionExtension
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.AllowedForNewUsers = true;
+            options.SignIn.RequireConfirmedEmail = true;
         })
             .AddRoles<UserRole>()
             .AddEntityFrameworkStores<BookDbContext>()
