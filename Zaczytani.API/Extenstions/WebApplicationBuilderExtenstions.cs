@@ -36,10 +36,13 @@ public static class WebApplicationBuilderExtenstions
             });
         });
 
+        var frontendUrl = builder.Configuration.GetSection("FrontendUrl").Value
+            ?? throw new InvalidOperationException("Frontend URL is not configured. Please set 'FrontendUrl' in appsettings.json.");
+
         builder.Services.AddCors(options => options.AddPolicy("frontend",
             policy =>
             {
-                policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                policy.WithOrigins(frontendUrl).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
             }
         ));
     }
