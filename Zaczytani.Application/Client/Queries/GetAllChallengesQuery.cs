@@ -3,6 +3,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
+using Zaczytani.Domain.Enums;
+using Zaczytani.Domain.Exceptions;
+using Zaczytani.Domain.Helpers;
 using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Client.Queries;
@@ -24,7 +27,26 @@ public class GetAllChallengesQuery : IRequest<IEnumerable<ChallengeDto>>, IUserI
                 .Where(ch => !ch.UserProgress.Any(up => up.UserId == request.UserId))
                 .ToListAsync(cancellationToken);
 
-            return _mapper.Map<IEnumerable<ChallengeDto>>(challenges);
+            var challengeDtos = _mapper.Map<IEnumerable<ChallengeDto>>(challenges);
+
+            foreach (var dto in challengeDtos)
+            {
+
+                if (dto.Criteria == ChallengeType.Genre)
+                {
+                    if (Enum.TryParse(dto.CriteriaValue, false, out BookGenre bookGenre))
+                    {
+                        dto.CriteriaValue = EnumHelper.GetEnumDescription(bookGenre);
+                    }
+                    else
+                    {
+                        throw new BadRequestException("Provided criteria value is invalid");
+                    }
+
+                }
+            }
+
+            return challengeDtos;
         }
     }
 }

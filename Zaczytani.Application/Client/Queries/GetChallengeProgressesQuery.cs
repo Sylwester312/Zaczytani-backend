@@ -2,6 +2,9 @@
 using MediatR;
 using Zaczytani.Application.Dtos;
 using Zaczytani.Application.Filters;
+using Zaczytani.Domain.Enums;
+using Zaczytani.Domain.Exceptions;
+using Zaczytani.Domain.Helpers;
 using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Client.Queries;
@@ -18,8 +21,26 @@ public class GetChallengeProgressesQuery : IRequest<IEnumerable<ChallengeProgres
         public async Task<IEnumerable<ChallengeProgressDto>> Handle(GetChallengeProgressesQuery request, CancellationToken cancellationToken)
         {
             var progresses = await _challengeRepository.GetChallengesWithProgressByUserId(request.UserId, cancellationToken);
+            var progresseDtos = _mapper.Map<IEnumerable<ChallengeProgressDto>>(progresses);
 
-            return _mapper.Map<IEnumerable<ChallengeProgressDto>>(progresses);
+            foreach (var dto in progresseDtos)
+            {
+
+                if (dto.Criteria == ChallengeType.Genre)
+                {
+                    if (Enum.TryParse(dto.CriteriaValue, false, out BookGenre bookGenre))
+                    {
+                        dto.CriteriaValue = EnumHelper.GetEnumDescription(bookGenre);
+                    }
+                    else
+                    {
+                        throw new BadRequestException("Provided criteria value is invalid");
+                    }
+
+                }
+            }
+
+            return progresseDtos;
         }
     }
 }
