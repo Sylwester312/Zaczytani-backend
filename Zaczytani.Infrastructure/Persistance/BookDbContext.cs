@@ -18,6 +18,7 @@ internal class BookDbContext(DbContextOptions options) : IdentityDbContext<User,
     internal DbSet<Review> Reviews { get; set; } = null!;
     internal DbSet<Report> Reports { get; set; } = null!;
     internal DbSet<Follower> Followers { get; set; } = null!;
+    internal DbSet<EmailInfo> EmailInfo { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

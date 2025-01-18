@@ -9,16 +9,17 @@ namespace Zaczytani.Application.Client.Commands;
 
 public record CreateCommentCommand(string Content) : IRequest, IUserIdAssignable
 {
-    private Guid ReviewId {  get; set; }
+    private Guid ReviewId { get; set; }
     public void SetReviewId(Guid reviewId) => ReviewId = reviewId;
 
     private Guid UserId { get; set; }
     public void SetUserId(Guid userId) => UserId = userId;
 
-    private class CreateCommentCommandHandler(IReviewRepository reviewRepository, IMapper mapper) : IRequestHandler<CreateCommentCommand>
+    private class CreateCommentCommandHandler(IReviewRepository reviewRepository, IMapper mapper, IMediator mediator) : IRequestHandler<CreateCommentCommand>
     {
         private readonly IReviewRepository _reviewRepository = reviewRepository;
         private readonly IMapper _mapper = mapper;
+        private readonly IMediator _mediator = mediator;
 
         public async Task Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
@@ -31,6 +32,8 @@ public record CreateCommentCommand(string Content) : IRequest, IUserIdAssignable
 
             await _reviewRepository.AddCommentAsync(comment, cancellationToken);
             await _reviewRepository.SaveChangesAsync(cancellationToken);
+
+            await _mediator.Send(new CommentCreatedCommand(request.ReviewId), cancellationToken);
         }
     }
 }
