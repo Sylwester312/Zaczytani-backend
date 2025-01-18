@@ -43,6 +43,7 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
             .ThenInclude(b => b.Authors)
         .Include(r => r.User)
         .Include(r => r.Comments)
+            .ThenInclude(c => c.User)
         .Where(r => r.IsFinal == true)
         .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
