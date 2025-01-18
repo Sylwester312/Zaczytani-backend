@@ -106,11 +106,4 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         return Ok(books);
     }
 
-    [HttpGet("CurrentlyReadingShelfId")]
-    public async Task<ActionResult<ReadingBookShelfIdDto>> GetCurrentlyReadingShelfId()
-    {
-        var query = new GetCurrentlyReadingShelfIdQuery();
-        var shelfId = await _mediator.Send(query);
-        return Ok(shelfId);
-    }
 }

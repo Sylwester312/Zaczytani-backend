@@ -27,7 +27,6 @@ public class GetCurrentlyReadingShelfIdQuery : IRequest<ReadingBookShelfIdDto>, 
             var readingBookShelf = await _bookShelfRepository.GetBookShelfByTypeAsync(BookShelfType.Reading, request.UserId, cancellationToken)
                 ?? throw new NotFoundException("Reading BookShelf not found");
 
-
             return new ReadingBookShelfIdDto
             {
                 Id = readingBookShelf.Id
