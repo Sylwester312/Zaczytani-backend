@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using Zaczytani.Domain.Constants;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Enums;
 using Zaczytani.Infrastructure.Persistance;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Zaczytani.Infrastructure.Seeders;
 
@@ -102,6 +100,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             SecurityStamp = Guid.NewGuid().ToString(),
             LockoutEnabled = true,
             NormalizedUserName = "admin".ToUpper(),
+            EmailConfirmed = true,
         };
 
         admin.PasswordHash = _passwordHasher.HashPassword(admin, "password");
@@ -116,6 +115,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             SecurityStamp = Guid.NewGuid().ToString(),
             LockoutEnabled = true,
             NormalizedUserName = "user".ToUpper(),
+            EmailConfirmed = true,
         };
 
         user.PasswordHash = _passwordHasher.HashPassword(user, "password");
