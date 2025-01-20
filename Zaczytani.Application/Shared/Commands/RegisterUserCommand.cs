@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Exceptions;
+using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Shared.Commands;
 
@@ -18,12 +19,13 @@ public class RegisterUserCommand : IRequest
     public string Password { get; set; }
     public string Email { get; set; }
 
-    public class RegisterUserCommandHandler(UserManager<User> userManager, IUserStore<User> userStore, IEmailSender<User> emailSender, IConfiguration configuration) : IRequestHandler<RegisterUserCommand>
+    public class RegisterUserCommandHandler(UserManager<User> userManager, IUserStore<User> userStore, IEmailSender<User> emailSender, IConfiguration configuration, IBookShelfRepository bookShelfRepository) : IRequestHandler<RegisterUserCommand>
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly IUserStore<User> _userStore = userStore;
         private readonly IUserEmailStore<User> _emailStore = (IUserEmailStore<User>)userStore;
         private readonly IEmailSender<User> _emailSender = emailSender;
+        private readonly IBookShelfRepository _bookShelfRepository = bookShelfRepository;
         private readonly string _frontendUrl = configuration.GetSection("FrontendUrl").Value
             ?? throw new InvalidOperationException("Frontend URL is not configured. Please set 'FrontendUrl' in appsettings.json.");
 
@@ -43,9 +45,22 @@ public class RegisterUserCommand : IRequest
                 throw new BadRequestException(result.Errors.First().Description);
             }
 
+            await CreateDefaultBookShelves(user.Id, cancellationToken);
+
             await SendConfirmationEmailAsync(user, request.Email);
         }
 
+        private async Task CreateDefaultBookShelves(Guid userId, CancellationToken cancellationToken)
+        {
+            var reading = BookShelf.CreateCurrentlyReading(userId);
+            var read = BookShelf.CreateRead(userId);
+            var toRead = BookShelf.CreateToRead(userId);
+
+            await _bookShelfRepository.AddAsync(reading, cancellationToken);
+            await _bookShelfRepository.AddAsync(read, cancellationToken);
+            await _bookShelfRepository.AddAsync(toRead, cancellationToken);
+            await _bookShelfRepository.SaveChangesAsync(cancellationToken);
+        }
 
         private async Task SendConfirmationEmailAsync(User user, string email)
         {
