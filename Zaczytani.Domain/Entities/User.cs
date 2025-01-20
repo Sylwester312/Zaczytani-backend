@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
-using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.Domain.Entities;
 public class User : IdentityUser<Guid>

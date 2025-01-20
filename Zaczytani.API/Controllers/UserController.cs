@@ -9,26 +9,32 @@ using Zaczytani.Application.Shared.Commands;
 namespace Zaczytani.API.Controllers;
 
 [ApiController]
-[Authorize]
-[SetUserId]
 [Route("api/[controller]")]
-public class UserController(IMediator mediator, ILogger<UserController> logger) : ControllerBase
+public class UserController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly ILogger<UserController> _logger = logger;
 
+    [HttpPost("Register")]
+    public async Task<ActionResult> Register([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPut()]
+    public async Task<ActionResult> UpdateProfile([FromBody] UpdateUserCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return NoContent();
+    }
+
+    [Authorize]
+    [SetUserId]
     [HttpGet("Profile")]
     public async Task<ActionResult<UserProfileDto>> GetProfile(CancellationToken cancellationToken)
     {
         var query = new GetUserProfileQuery();
         var profile = await _mediator.Send(query, cancellationToken);
         return Ok(profile);
-    }
-
-    [HttpPost("ChangePassword")]
-    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordCommand command, CancellationToken cancellationToken)
-    {
-        await _mediator.Send(command, cancellationToken);
-        return NoContent();
     }
 }
