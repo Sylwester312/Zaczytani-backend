@@ -21,5 +21,5 @@ internal class AuthorRepository(BookDbContext dbContext) : IAuthorRepository
         return await _dbContext.Authors.Where(a => a.Name == name).FirstOrDefaultAsync();
     }
 
-    public Task SaveChangesAsync() => _dbContext.SaveChangesAsync();
+    public Task SaveChangesAsync(CancellationToken cancellationToken) => _dbContext.SaveChangesAsync(cancellationToken);
 }

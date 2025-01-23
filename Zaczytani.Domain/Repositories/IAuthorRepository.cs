@@ -7,5 +7,5 @@ public interface IAuthorRepository
     IQueryable<Author> GetAll();
     Task<Author?> GetByIdAsync(Guid authorId);
     Task<Author?> GetByNameAsync(string name);
-    Task SaveChangesAsync();
+    Task SaveChangesAsync(CancellationToken cancellationToken);
 }
