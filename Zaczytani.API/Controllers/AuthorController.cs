@@ -21,9 +21,15 @@ public class AuthorController(IMediator mediator) : ControllerBase
         return Ok(authors);
     }
 
-    [HttpPost("AddImage")]
-    public async Task<ActionResult<Guid>> AddAuthorPhoto([FromBody] AddAuthorImageCommand command)
+    [HttpPost("{authorId}/AddImage")]
+    public async Task<ActionResult<Guid>> AddAuthorPhoto([FromRoute] Guid authorId, [FromBody] string fileName)
     {
+        var command = new AddAuthorImageCommand
+        {
+            AuthorId = authorId,
+            FileName = fileName
+        };
+
         var result = await _mediator.Send(command);
         return NoContent();
     }
