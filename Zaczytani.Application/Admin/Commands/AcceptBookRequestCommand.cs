@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Zaczytani.Application.Client.Commands;
 using Zaczytani.Domain.Enums;
 using Zaczytani.Domain.Exceptions;
 using Zaczytani.Domain.Repositories;
@@ -33,14 +34,17 @@ public class AcceptBookRequestCommand : IRequest
 
         public async Task Handle(AcceptBookRequestCommand request, CancellationToken cancellationToken)
         {
-            var bookRequest = await _bookRequestRepository.GetByIdAsync(request.Id)
+            var bookRequest = await _bookRequestRepository.GetByIdAsync(request.Id, cancellationToken)
                  ?? throw new NotFoundException($"Book Request with ID {request.Id} was not found.");
-            
+
             bookRequest.Status = BookRequestStatus.Accepted;
             await _bookRequestRepository.SaveChangesAsync(cancellationToken);
 
             var command = _mapper.Map<CreateBookCommand>(request);
-            await _mediator.Send(command, cancellationToken);
+            var bookId = await _mediator.Send(command, cancellationToken);
+            
+            var bookRequestAcceptedCommand = new BookRequestAcceptedCommand(request.Id, bookId);
+            await _mediator.Send(bookRequestAcceptedCommand, cancellationToken);
         }
     }
 }

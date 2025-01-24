@@ -21,7 +21,9 @@ internal class BookRequestRepository(BookDbContext dbContext) : IBookRequestRepo
         .OrderBy(b => b.CreatedDate);
 
     public async Task<BookRequest?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) 
-        => await _dbContext.BookRequests.FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
+        => await _dbContext.BookRequests
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
 
     public async Task DeleteBookRequest(Guid id, CancellationToken cancellationToken)
     {

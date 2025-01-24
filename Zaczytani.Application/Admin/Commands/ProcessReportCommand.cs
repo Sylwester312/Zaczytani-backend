@@ -26,7 +26,7 @@ public record ProcessReportCommand(Guid ReportId, ReportStatus Status) : IReques
 
             if (request.Status == ReportStatus.Blocked)
             {
-                await _mediator.Send(new BlockUserCommand(report.Review.UserId), cancellationToken);
+                await _mediator.Send(new BlockUserCommand(report.Review.UserId,report.Id), cancellationToken);
             }
 
             await _reportRepository.SaveChangesAsync();

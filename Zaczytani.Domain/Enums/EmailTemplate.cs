@@ -4,6 +4,5 @@ public enum EmailTemplate
 {
     CommentAdded,
     UserBlocked,
-    PasswordChanged,
     BookRequestConfirmed
 }
