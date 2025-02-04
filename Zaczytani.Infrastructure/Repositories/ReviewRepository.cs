@@ -35,7 +35,11 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
         .OrderByDescending(r => r.CreatedDate)
         .FirstOrDefaultAsync(cancellationToken);
 
-    public async Task<Review?> GetReviewByIdAsync(Guid id, CancellationToken cancellationToken) => await _dbContext.Reviews.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    public async Task<Review?> GetReviewByIdAsync(Guid id, CancellationToken cancellationToken) 
+        => await _dbContext.Reviews
+        .Include(r => r.User)
+        .Include(r => r.Book)
+        .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public async Task<Review?> GetFinalReviewByIdAsync(Guid id, CancellationToken cancellationToken)
         => await _dbContext.Reviews
@@ -43,6 +47,7 @@ internal class ReviewRepository(BookDbContext dbContext) : IReviewRepository
             .ThenInclude(b => b.Authors)
         .Include(r => r.User)
         .Include(r => r.Comments)
+            .ThenInclude(c => c.User)
         .Where(r => r.IsFinal == true)
         .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 

@@ -57,7 +57,8 @@ internal class DtosProfile : Profile
 
         #region Report
         CreateMap<Report, ReportDto>()
-            .ForMember(desc => desc.Review, opt => opt.MapFrom(src => src.Review.Content));
+            .ForMember(dest => dest.Review, opt => opt.MapFrom(src => src.Review.Content))
+            .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.Review.User));
         #endregion
 
         #region Review

@@ -17,6 +17,7 @@ public class GetPendingReports : IRequest<IEnumerable<ReportDto>>
             var reports = await _reportRepository.GetPendingReports()
                 .Include(r => r.User)
                 .Include(r => r.Review)
+                    .ThenInclude(r => r.User)
                 .ToListAsync(cancellationToken);
 
             var reportDtos = _mapper.Map<IEnumerable<ReportDto>>(reports);

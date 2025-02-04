@@ -11,17 +11,19 @@ internal class UserDrawnBookRepository(BookDbContext dbContext) : IUserDrawnBook
     {
         return await _dbContext.UserDrawnBook
             .Include(udb => udb.Book)
-            .ThenInclude(b => b.Authors)
+                .ThenInclude(b => b.Authors)
+            .Include(udb => udb.Book)
+                .ThenInclude(b => b.Reviews)
             .FirstOrDefaultAsync(udb => udb.UserId == userId && udb.DrawnDate == date, cancellationToken);
     }
 
-    public async Task AddAsync(UserDrawnBook userDrawnBook)
+    public async Task AddAsync(UserDrawnBook userDrawnBook, CancellationToken cancellationToken)
     {
-        await _dbContext.UserDrawnBook.AddAsync(userDrawnBook);
+        await _dbContext.UserDrawnBook.AddAsync(userDrawnBook, cancellationToken);
     }
 
-    public Task SaveChangesAsync()
+    public Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        return _dbContext.SaveChangesAsync();
+        return _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

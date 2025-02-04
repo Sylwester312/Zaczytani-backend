@@ -3,6 +3,8 @@ using MediatR;
 using Zaczytani.Application.Filters;
 using Zaczytani.Domain.Entities;
 using Zaczytani.Domain.Enums;
+using Zaczytani.Domain.Exceptions;
+using Zaczytani.Domain.Helpers;
 using Zaczytani.Domain.Repositories;
 
 namespace Zaczytani.Application.Client.Commands;
@@ -20,11 +22,24 @@ public class CreateChallengeCommand : IRequest, IUserIdAssignable
     {
         private readonly IChallengeRepository _challengeRepository = challengeRepository;
         private readonly IMapper _mapper = mapper;
+
         public async Task Handle(CreateChallengeCommand request, CancellationToken cancellationToken)
         {
             var challenge = _mapper.Map<Challenge>(request);
             challenge.UserId = request.UserId;
             challenge.Criteria = request.Critiera;
+
+            if (challenge.Criteria == ChallengeType.Genre)
+            {
+                try
+                {
+                    challenge.CriteriaValue = EnumHelper.GetEnumValueFromDescription<BookGenre>(challenge.CriteriaValue!).ToString();
+                }
+                catch (ArgumentException)
+                {
+                    throw new BadRequestException("Provided criteria value is invalid");
+                }
+            }
 
             await _challengeRepository.AddAsync(challenge, cancellationToken);
             await _challengeRepository.SaveChangesAsync(cancellationToken);

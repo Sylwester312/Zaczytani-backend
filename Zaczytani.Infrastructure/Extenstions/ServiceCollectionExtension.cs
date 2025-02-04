@@ -24,6 +24,7 @@ public static class ServiceCollectionExtension
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.AllowedForNewUsers = true;
+            options.SignIn.RequireConfirmedEmail = true;
         })
             .AddRoles<UserRole>()
             .AddEntityFrameworkStores<BookDbContext>()
@@ -42,6 +43,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IReportRepository, ReportRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IChallengeRepository, ChallengeRepository>();
+        services.AddScoped<IEmailInfoRepository, EmailInfoRepository>();
         services.AddScoped<ISeeder, Seeder>();
     }
 }

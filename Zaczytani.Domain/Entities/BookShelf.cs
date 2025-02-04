@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Zaczytani.Domain.Enums;
 
 namespace Zaczytani.Domain.Entities;
@@ -25,4 +25,37 @@ public class BookShelf
     public virtual User User { get; set; } = null!;
 
     public virtual ICollection<Book> Books { get; set; } = [];
+
+    public static BookShelf CreateCurrentlyReading(Guid userId)
+    {
+        return new BookShelf()
+        {
+            Name = "Aktualnie czytane",
+            IsDefault = true,
+            Type = BookShelfType.Reading,
+            UserId = userId,
+        };
+    }
+
+    public static BookShelf CreateRead(Guid userId)
+    {
+        return new BookShelf()
+        {
+            Name = "Przeczytane",
+            IsDefault = true,
+            Type = BookShelfType.Read,
+            UserId = userId,
+        };
+    }
+
+    public static BookShelf CreateToRead(Guid userId)
+    {
+        return new BookShelf()
+        {
+            Name = "Chce przeczytać",
+            IsDefault = true,
+            Type = BookShelfType.ToRead,
+            UserId = userId,
+        };
+    }
 }
