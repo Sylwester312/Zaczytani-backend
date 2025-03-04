@@ -85,6 +85,14 @@ internal class BookShelfRepository(BookDbContext dbContext) : IBookShelfReposito
             .SelectMany(bs => bs.Books)
             .Count(b => b.Id == bookId);
     }
+    public async Task<IEnumerable<Book>> GetTopBooksByShelfIdAsync(Guid shelfId, int count, CancellationToken cancellationToken)
+    {
+        return await _dbContext.BookShelves
+            .Where(bs => bs.Id == shelfId)
+            .SelectMany(bs => bs.Books) 
+            .Take(count)
+            .ToListAsync(cancellationToken);
+    }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
