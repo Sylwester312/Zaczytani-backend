@@ -26,11 +26,21 @@ internal class ChallengeRepository(BookDbContext dbContext) : IChallengeReposito
     }
     public async Task DeleteAsync(Guid challengeId, CancellationToken cancellationToken)
     {
-        var challenge = await _dbContext.Challenges.FindAsync(new object?[] { challengeId }, cancellationToken);
+        var challenge = await GetChallenge(challengeId, cancellationToken);
         if (challenge != null)
         {
             _dbContext.Challenges.Remove(challenge);
         }
     }
+
+    public async Task DeleteProgressAsync(Guid progressId, CancellationToken cancellationToken)
+    {
+        var progress = await _dbContext.ChallengeProgresses.FirstOrDefaultAsync(p => p.Id == progressId, cancellationToken);
+        if (progress != null)
+        {
+            _dbContext.ChallengeProgresses.Remove(progress);
+        }
+    }
+
     public async Task SaveChangesAsync(CancellationToken cancellationToken) => await _dbContext.SaveChangesAsync(cancellationToken);
 }
