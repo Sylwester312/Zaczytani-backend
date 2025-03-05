@@ -10,6 +10,6 @@ public interface IBookRepository
     IQueryable<Book> GetUnseenBooks(Guid userId);
 
     Task EditAsync(Book entity);
+    void Delete(Book entity);
     Task SaveChangesAsync(CancellationToken cancellationToken);
-    Task DeleteAsync(Book entity,CancellationToken cancellation);
 }

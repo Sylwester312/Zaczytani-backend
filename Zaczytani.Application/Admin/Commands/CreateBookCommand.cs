@@ -45,40 +45,27 @@ public class CreateBookCommand : IRequest<Guid>, IUserIdAssignable
                 Series = request.Series,
                 ReleaseDate = request.ReleaseDate,
             };
-    
-            foreach (var author in request.Authors)
-            {
-                var existingAuthor = await _authorRepository.GetByNameAsync(author);
 
-                if (existingAuthor != null)
-                {
-                    book.Authors.Add(existingAuthor);
-                }
-                else
-                {
-                    var newAuthor = new Author
-                    {
-                        Name = author
-                    };
-                    book.Authors.Add(newAuthor);
-                }
-            }
-
-          
-            var existingPublishingHouse = await _publishingHouseRepository.GetByNameAsync(request.PublishingHouse);
-
-            if (existingPublishingHouse != null)
+            foreach (var authorName in request.Authors)
             {
-                book.PublishingHouse = existingPublishingHouse;
-            }
-            else
-            {
-                var newPublishingHouse = new PublishingHouse
+                var author = await _authorRepository.GetByNameAsync(authorName);
+
+                author ??= new Author
                 {
-                    Name = request.PublishingHouse
+                    Name = authorName
                 };
-                book.PublishingHouse = newPublishingHouse;
+
+                book.Authors.Add(author);
             }
+
+            var publishingHouse = await _publishingHouseRepository.GetByNameAsync(request.PublishingHouse);
+
+            publishingHouse ??= new PublishingHouse
+            {
+                Name = request.PublishingHouse
+            };
+
+            book.PublishingHouse = publishingHouse;
 
             await _bookRepository.AddAsync(book);
             await _bookRepository.SaveChangesAsync(cancellationToken);

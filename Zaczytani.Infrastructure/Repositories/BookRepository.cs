@@ -35,6 +35,7 @@ internal class BookRepository(BookDbContext dbContext) : IBookRepository
 
     public async Task EditAsync(Book entity) => _dbContext.Books.Update(entity);
 
-    public async Task DeleteAsync(Book entity, CancellationToken cancellationToken)=> _dbContext.Remove(entity);
+    public void Delete(Book entity) => _dbContext.Remove(entity);
+
     public Task SaveChangesAsync(CancellationToken cancellationToken) => _dbContext.SaveChangesAsync(cancellationToken);
 }
