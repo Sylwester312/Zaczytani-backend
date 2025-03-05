@@ -28,6 +28,7 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         var bookId = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetBookDetails), new { id = bookId }, new { id = bookId });
     }
+
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteBook([FromRoute] Guid id)
     {
@@ -35,6 +36,7 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         await _mediator.Send(command);
         return NoContent();
     }
+
     [HttpGet("Search")]
     public async Task<ActionResult<IEnumerable<SearchDto>>> SearchBook([FromQuery] SearchBookQuery command)
     {
@@ -106,4 +108,10 @@ public class BookController(IMediator mediator, ILogger<BookController> logger) 
         return Ok(books);
     }
 
+    [HttpPost("Recommended")]
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetRecommendedBooks([FromBody] GetRecommendedBooksQuery query)
+    {
+        var books = await _mediator.Send(query);
+        return Ok(books);
+    }
 }
