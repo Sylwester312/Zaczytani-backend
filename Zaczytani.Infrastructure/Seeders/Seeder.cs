@@ -149,6 +149,51 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
             {
                 Id = Guid.NewGuid(),
                 Name = "J.K. Rowling"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Władysław Reymont"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "J.R.R. Tolkien"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Michaił Bułhakow"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Gabriel García Márquez"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "George Orwell"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Stephen King"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Herman Melville"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "F. Scott Fitzgerald"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Fiodor Dostojewski"
             }
             ];
 
@@ -182,7 +227,7 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
                 Description = "Drugi tom bestsellerowego cyklu w poważnej, \"dorosłej\" okładce.\r\nTym razem Harry będzie musiał się zmierzyć z tajemniczym potworem z komnaty tajemnic na zamku Hogwart. Otworzyć tę komnatę mógł jedynie prawowity dziedzic Slytherina, a wskutek nieszczęśliwego zbiegu okoliczności podejrzenie pada na Harryego. W dodatku jeden z najbliższych przyjaciół bohatera znajduje się w śmiertelnym niebezpieczeństwie. Z tego tomu dowiecie się, jaka była przeszłość Hagrida, jakie sekrety skrywa rodzina Malfoya i kto naprawdę wypuścił potwora.",
                 Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("J.K"))],
                 Genre= [BookGenre.Romance, BookGenre.Memoir],
-                Isbn = "1231231231",
+                Isbn = "9871231231",
                 PageNumber = 10,
                 ReleaseDate = new DateOnly(2010, 1, 1),
                 Series = "Harry Potter",
@@ -191,6 +236,176 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
                     Id = Guid.NewGuid(),
                     Name = "Bloomsbury"
                 },
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Władca Pierścieni: Drużyna Pierścienia",
+                Description = "Pierwszy tom trylogii 'Władca Pierścieni', w którym młody hobbit Frodo Baggins staje przed zadaniem zniszczenia Pierścienia Władzy. Razem ze swoją drużyną wyrusza na niebezpieczną wyprawę, której celem jest zniszczenie pierścienia w ogniu Góry Przeznaczenia.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("J.R.R. Tolkien"))],
+                Genre = [BookGenre.Fantasy, BookGenre.Adventure],
+                Isbn = "2345678901",
+                PageNumber = 423,
+                ReleaseDate = new DateOnly(2001, 7, 1),
+                Series = "Władca Pierścieni",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Allen & Unwin"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Ziemia Obiecana",
+                Description = "Powieść Władysława Reymonta, która opowiada o ciężkiej pracy robotników w przemysłowym Łodzi na przełomie XIX i XX wieku. W książce przedstawiono brutalne realia życia społecznego i ekonomicznego, a także ambicje i dążenia ludzi do sukcesu.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("Władysław Reymont"))],
+                Genre = [BookGenre.Drama],
+                Isbn = "3456789012",
+                PageNumber = 510,
+                ReleaseDate = new DateOnly(1905, 1, 1),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Zysk i S-ka"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "1984",
+                Description = "Klasyczna powieść George'a Orwella, która przedstawia totalitarne społeczeństwo, w którym wszyscy są pod stałą obserwacją. Powieść bada tematykę władzy, kontroli i wolności jednostki.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("George Orwell"))],
+                Genre = [BookGenre.Biography, BookGenre.History],
+                Isbn = "4567890123",
+                PageNumber = 328,
+                ReleaseDate = new DateOnly(1949, 6, 8),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Secker & Warburg"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Sto lat samotności",
+                Description = "Magiczna powieść Gabriela Garcíi Márqueza, która opowiada historię rodziny Buendía w fikcyjnym miasteczku Macondo. Łączy realizm magiczny z historią i kulturą Kolumbii.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("Gabriel García Márquez"))],
+                Genre = [BookGenre.History],
+                Isbn = "5678901234",
+                PageNumber = 417,
+                ReleaseDate = new DateOnly(1967, 5, 30),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Harper & Row"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Mistrz i Małgorzata",
+                Description = "Powieść Michaiła Bułhakowa, która łączy elementy realizmu i fantastyki, opowiadając historię szatana, który przybywa do ZSRR, by ukarać władze, a także historię miłości Mistrza i Małgorzaty.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("Michaił Bułhakow"))],
+                Genre = [BookGenre.Fantasy, BookGenre.HistoricalFiction],
+                Isbn = "6789012345",
+                PageNumber = 384,
+                ReleaseDate = new DateOnly(1966, 1, 1),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Izd-vo Khudozhestvennaya Literatura"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Zbrodnia i kara",
+                Description = "Powieść Fiodora Dostojewskiego opowiada o losach Rodiona Raskolnikowa, młodego studenta, który popełnia morderstwo, przekonany, że jego czyn jest moralnie usprawiedliwiony. Powieść bada tematykę winy, kary i odkupienia.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("Fiodor Dostojewski"))],
+                Genre = [BookGenre.Psychology, BookGenre.History],
+                Isbn = "7890123456",
+                PageNumber = 430,
+                ReleaseDate = new DateOnly(1866, 1, 1),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Izd-vo Dostojewskiego"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Wielki Gatsby",
+                Description = "Powieść F. Scotta Fitzgeralda, która ukazuje obraz amerykańskiego społeczeństwa lat 20-tych XX wieku, skoncentrowany na tytułowym Gatsby'm, bogatym, ale samotnym mężczyźnie dążącym do odzyskania miłości z przeszłości.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("F. Scott Fitzgerald"))],
+                Genre = [BookGenre.Business, BookGenre.Romance],
+                Isbn = "8901234567",
+                PageNumber = 180,
+                ReleaseDate = new DateOnly(1925, 4, 10),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Scribner"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Moby Dick",
+                Description = "Powieść Hermana Melville'a, która opowiada historię Kapitana Ahaba i jego obsesji na punkcie złapania legendarnego białego wieloryba, Moby Dicka. Jest to historia pełna symboliki i refleksji na temat ludzkiej natury.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("Herman Melville"))],
+                Genre = [BookGenre.Psychology, BookGenre.History],
+                Isbn = "9012345678",
+                PageNumber = 635,
+                ReleaseDate = new DateOnly(1851, 10, 18),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Harper & Brothers"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Zielona Mila",
+                Description = "Powieść Stephena Kinga, która opowiada historię strażników więziennych oraz skazanych, którzy zostali umieszczeni na Oddziale ówcześnie tzw. 'zielonej mili'. Historia pełna emocji, tajemnic i niewyjaśnionych zdarzeń.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("Stephen King"))],
+                Genre = [BookGenre.Horror, BookGenre.Drama],
+                Isbn = "1234567890",
+                PageNumber = 432,
+                ReleaseDate = new DateOnly(1996, 12, 1),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Viking Penguin"
+                }
+            },
+            new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = "Rok 1984",
+                Description = "Kolejna dystopia George'a Orwella, przedstawiająca totalitarne państwo, które kontroluje każdy aspekt życia swoich obywateli. Powieść dotyka tematów takich jak inwigilacja, cenzura i manipulacja prawdą.",
+                Authors = [_dbContext.Authors.FirstOrDefault(a => a.Name.Contains("George Orwell"))],
+                Genre = [BookGenre.History, BookGenre.Politics],
+                Isbn = "2345678901",
+                PageNumber = 328,
+                ReleaseDate = new DateOnly(1949, 6, 8),
+                Series = "Brak",
+                PublishingHouse = new PublishingHouse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Secker & Warburg"
+                }
             }
             ];
 
@@ -221,7 +436,6 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
                 Description = "Drugi tom bestsellerowego cyklu w poważnej, \"dorosłej\" okładce.\r\nTym razem Harry będzie musiał się zmierzyć z tajemniczym potworem z komnaty tajemnic na zamku Hogwart. Otworzyć tę komnatę mógł jedynie prawowity dziedzic Slytherina, a wskutek nieszczęśliwego zbiegu okoliczności podejrzenie pada na Harryego. W dodatku jeden z najbliższych przyjaciół bohatera znajduje się w śmiertelnym niebezpieczeństwie. Z tego tomu dowiecie się, jaka była przeszłość Hagrida, jakie sekrety skrywa rodzina Malfoya i kto naprawdę wypuścił potwora.",
                 Authors = "Nie wiem",
                 Genre= [BookGenre.Romance, BookGenre.Memoir],
-                Isbn = "1231231231",
                 ReleaseDate = new DateOnly(2010, 1, 1),
                 Series = "Harry Potter",
                 User = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!,
@@ -233,38 +447,34 @@ internal class Seeder(BookDbContext dbContext, IPasswordHasher<User> passwordHas
 
     private IEnumerable<BookShelf> GetDefaultBookShelves()
     {
-        var books = GetBooks().ToList();
+        return
+        [
+            new BookShelf
+            {
+                Id = Guid.NewGuid(),
+                Name = "Przeczytane",
+                UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+                Type = BookShelfType.Read,
+                IsDefault = true,
 
-        return new List<BookShelf>
-    {
-        new BookShelf
-        {
-            Id = Guid.NewGuid(),
-            Name = "Przeczytane",
-            UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
-            Type = BookShelfType.Read,
-            IsDefault = true,
-            Books = new List<Book> { books.FirstOrDefault(b => b.Title.Contains("Harry Potter i Komnata Tajemnic"))! }
+            },
+            new BookShelf
+            {
+                Id = Guid.NewGuid(),
+                Name = "Chce przeczytać",
+                UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+                Type = BookShelfType.ToRead,
+                IsDefault = true,
 
-        },
-        new BookShelf
-        {
-            Id = Guid.NewGuid(),
-            Name = "Chce przeczytać",
-            UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
-            Type = BookShelfType.ToRead,
-            IsDefault = true,
-            Books = new List<Book> { books.FirstOrDefault(b => b.Title.Contains("Harry Potter i Kamień Filozoficzny"))! }
-
-        },
-        new BookShelf
-        {
-            Id = Guid.NewGuid(),
-            Name = "Aktualnie czytane",
-            UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
-            Type = BookShelfType.Reading,
-            IsDefault = true
-        }
-    };
+            },
+            new BookShelf
+            {
+                Id = Guid.NewGuid(),
+                Name = "Aktualnie czytane",
+                UserId = _dbContext.Users.FirstOrDefault(u => u.Email == "user@email.com")!.Id,
+                Type = BookShelfType.Reading,
+                IsDefault = true
+            }
+        ];
     }
 }
