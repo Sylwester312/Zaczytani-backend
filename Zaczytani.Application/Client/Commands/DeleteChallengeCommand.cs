@@ -18,15 +18,15 @@ public record DeleteChallengeCommand(Guid ChallengeId) : IRequest, IUserIdAssign
         {
             var challenge = await _challengeRepository.GetChallenge(request.ChallengeId, cancellationToken)
                 ?? throw new NotFoundException("Challenge not found or you do not have access to it.");
-
             if (challenge.UserId == request.UserId)
             {
+                await _challengeRepository.DeleteProgressByChallengeIdAsync(request.ChallengeId, cancellationToken);
                 await _challengeRepository.DeleteAsync(request.ChallengeId, cancellationToken);
             }
             else
             {
-                var progressList = await _challengeRepository.GetChallengesWithProgressByUserId(request.UserId, cancellationToken);
-                var progress = progressList.FirstOrDefault(p => p.ChallengeId == request.ChallengeId);
+                var progress = (await _challengeRepository.GetChallengesWithProgressByUserId(request.UserId, cancellationToken))
+                    .FirstOrDefault(p => p.ChallengeId == request.ChallengeId);
 
                 if (progress != null)
                 {
