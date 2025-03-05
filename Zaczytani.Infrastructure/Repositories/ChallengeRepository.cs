@@ -24,6 +24,13 @@ internal class ChallengeRepository(BookDbContext dbContext) : IChallengeReposito
             .Where(cp => cp.UserId == userId)
             .ToListAsync(cancellationToken);
     }
-
+    public async Task DeleteAsync(Guid challengeId, CancellationToken cancellationToken)
+    {
+        var challenge = await _dbContext.Challenges.FindAsync(new object?[] { challengeId }, cancellationToken);
+        if (challenge != null)
+        {
+            _dbContext.Challenges.Remove(challenge);
+        }
+    }
     public async Task SaveChangesAsync(CancellationToken cancellationToken) => await _dbContext.SaveChangesAsync(cancellationToken);
 }
